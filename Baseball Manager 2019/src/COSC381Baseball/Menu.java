@@ -24,8 +24,8 @@ public class Menu {
 		}
 		return input;	
 	}
-	//Code recycled from last project with some tweaks, uses switch statement and splits arguments into
-	//String input
+	//Code recycled from last project with some tweaks, uses switch statement and splits 
+	//arguments into String input
 	public void display(MemberList memberList) {
 		System.out.println("\nPossible Commands:");
 		System.out.println(
@@ -134,7 +134,7 @@ public class Menu {
 		Menu menu = new Menu();
 		int memberAmt = menu.initialize();
 		MemberList memberList = new MemberList(new Member(null, menu.getInput("Enter the name of Member 1: ")));
-		for(int i = 1; i<=memberAmt;i++) {
+		for(int i = 2; i<=memberAmt;i++) {
 			memberList.addMember(new Member(null,menu.getInput("Enter the name of Member "+i+": ")));
 		}
 		while(!menu.quit)menu.display(memberList);
