@@ -1,4 +1,5 @@
 import java.util.Scanner;
+import java.util.Stack;
 public class ExprTree {
 	
 	public boolean evalfun(String inputString) {
@@ -56,12 +57,76 @@ public class ExprTree {
 		}
 		
 		//check translate
+		
 		for (int i = 0; i < charExprArr.length; i++) {
-			System.out.println(charExprArr[i]);
+			System.out.print(charExprArr[i]);
 		}
+		
+		String prefix = infixToPreFix(charExprArr);
+		System.out.println(prefix);
 		
 		
 		
 		return validInput;
 	}
+	
+	//The expression key code needs the input to be in prefix notation, this will translate it for us
+	private String infixToPreFix(char[] input) {
+		//array for output
+		char[] preFixInput = new char[input.length];
+		
+		//stack for operators and operands
+		Stack<Character> operators = new Stack<Character>();
+		Stack<String> operands = new Stack<String>();
+		
+		//cycle through the infix char array 
+		for (int i = 0; i < input.length; i++) {
+			
+			//place operand in the right stack if it is one
+			if (!isOperator(input[i])) {
+				operands.push(Character.toString(input[i]));
+			}
+			
+			//if it is an operator then push it to the right place in operator stack
+			while (!operators.empty() && getPriority(input[i]) <= getPriority(operators.peek())) {
+				String operand1, operand2;
+				operand1 = operands.pop();
+				operand2 = operands.pop();
+				char operator = operators.pop();
+				String temp = operator + operand2 + operand1;
+				operands.push(temp);
+			}
+			operators.push(input[i]);
+		} 
+		//empty stack to build final string
+		while (!operators.empty()) {
+			String operand1, operand2;
+			operand1 = operands.pop();
+			operand2 = operands.pop();
+			char operator = operators.pop();
+			String temp = operator + operand2 + operand1;
+			operands.push(temp);
+		}
+
+		
+		return operands.pop();
+	}
+	
+	//helper functions
+	private int getPriority(char operator) {
+		if (operator == '+' || operator == '-') {
+			return 1;
+		} else {
+			return 2;
+		}
+	}
+	
+	private boolean isOperator(char c) {
+		if (c == '+' || c == '-' ||  c == '*' || c == '/') {
+			return true;
+		}
+		
+		return false;
+	}
+	
 }

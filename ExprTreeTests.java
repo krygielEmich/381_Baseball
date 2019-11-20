@@ -16,4 +16,20 @@ public class ExprTreeTests {
 		assertEquals(false, testTree.evalfun("AVG + B - OPS"));
 	}
 	
+	@Test
+	public void testEvalGoodInput() {
+		ExprTree testTree = new ExprTree();
+		assertEquals(true, testTree.evalfun("AVG + OBP * SLG / OPS"));
+	}
+	
+	public void testPEvalBadInput() {
+		ExprTree testTree = new ExprTree();
+		//assertEquals(false, testTree.pevalfun("AVG + B - OPS"));
+	}
+	
+	public void testPEvalGoodInput() {
+		ExprTree testTree = new ExprTree();
+		//assertEquals(false, testTree.pevalfun("AVG + B - OPS"));
+	}
+	
 }
