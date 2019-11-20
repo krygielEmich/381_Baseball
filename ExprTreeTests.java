@@ -12,7 +12,8 @@ public class ExprTreeTests {
 	
 	@Test
 	public void testEvalBadInput() {
-		assertEquals(false, testTree.evalFun());
+		ExprTree testTree = new ExprTree();
+		assertEquals(false, testTree.evalfun("AVG + B - OPS"));
 	}
 	
 }
