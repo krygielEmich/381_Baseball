@@ -13,4 +13,9 @@ class PlayerListTest {
 		playerList.addPlayer(player2);
 		assertEquals(player2, playerList.getPlayer("J.Verlander"));
 	}
+	@Test
+	void toStringTest() {
+		System.out.print(playerList);
+		return;
+	}
 }

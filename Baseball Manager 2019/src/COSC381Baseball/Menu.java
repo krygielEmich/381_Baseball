@@ -6,11 +6,13 @@ import java.util.Scanner;
 public class Menu {
 	private boolean quit=false;
 	Scanner stdIn=new Scanner(System.in);
+	public PlayerList mlbList;
 
 	//Starts with the program, prompts user for what amount of members there are in the league
 	//@return int input, has to be a positive integer
 	public int initialize() {
 		int input = 0;
+		initializeMLBList();
 		System.out.print("How many members are drafting: ");
 		while(input<=0) {
 			input = 0;
@@ -23,6 +25,13 @@ public class Menu {
 			}
 		}
 		return input;	
+	}
+	//Eventually this will pull from the MLB database, right now I just have
+	//A placeholder so I can implement Drafting.
+	public void initializeMLBList() {
+		mlbList = new PlayerList(new Player(365, 10, "C", "J.Martinez"));
+		mlbList.addPlayer(new Player(114,19,"P","J.Verlander"));
+		mlbList.addPlayer(new Player(125,13,"1B","M.Cabrera"));
 	}
 	//Code recycled from last project with some tweaks, uses switch statement and splits 
 	//arguments into String input
@@ -52,14 +61,16 @@ public class Menu {
 		stdIn.nextLine();
 		switch(selection) {
 		case "ODRAFT":
-			if(input.length==3) {
-				oDraft(input[1],input[2]);
+			if(input.length==3&&mlbList.exists(input[1])&&!mlbList.getPlayer(input[1]).getDrafted()) {
+				ODraft oDraft = new ODraft(mlbList.getPlayer(input[1]),memberList.getMember(input[2]));
+				mlbList.getPlayer(input[1]).setDrafted(true);
 				break;
 			}
 			else input=null;
 		case "IDRAFT":
-			if(input.length==2) {
-				iDraft(input[1]);
+			if(input.length==3&&mlbList.exists(input[1])&&!mlbList.getPlayer(input[1]).getDrafted()) {
+				ODraft oDraft = new ODraft(mlbList.getPlayer(input[1]),memberList.memberList.get(0));
+				mlbList.getPlayer(input[1]).setDrafted(true);
 				break;
 			}
 			else input=null;

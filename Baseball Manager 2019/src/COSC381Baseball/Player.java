@@ -15,6 +15,14 @@ public class Player {
 		this.position=position;
 		this.name = name;
 	}
+	//Will print out the player, unless they are already drafted
+	public String toSting() {
+		String x = "";
+		if(!drafted) {
+			x+= this.name+" "+this.position+" W/L: "+wl+" RBI: "+RBI;
+		}
+		return x;
+	}
 	//Setters/Getters
 	public void setDrafted(boolean drafted) {
 		this.drafted=drafted;
