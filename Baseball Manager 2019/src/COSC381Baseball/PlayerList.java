@@ -28,9 +28,9 @@ public class PlayerList {
 		playerList.add(player);
 	}
 	//Prints out all the players in the list
-	public String toSting() {
+	public String toString() {
 		String x = "";
-		for(int i = 0; i<=playerList.size();i++) {
+		for(int i = 0; i<playerList.size();i++) {
 			x+=playerList.get(i).toString();
 		}
 		return x;

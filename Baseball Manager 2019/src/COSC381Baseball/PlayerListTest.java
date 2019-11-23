@@ -15,6 +15,8 @@ class PlayerListTest {
 	}
 	@Test
 	void toStringTest() {
+		Player player2 = new Player(114,19,"P","J.Verlander");
+		playerList.addPlayer(player2);
 		System.out.print(playerList);
 		return;
 	}

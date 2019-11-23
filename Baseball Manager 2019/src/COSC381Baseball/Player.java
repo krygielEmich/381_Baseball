@@ -16,10 +16,10 @@ public class Player {
 		this.name = name;
 	}
 	//Will print out the player, unless they are already drafted
-	public String toSting() {
+	public String toString() {
 		String x = "";
 		if(!drafted) {
-			x+= this.name+" "+this.position+" W/L: "+wl+" RBI: "+RBI;
+			x+= this.name+" "+this.position+" W/L: "+wl+" RBI: "+RBI+"\n";
 		}
 		return x;
 	}

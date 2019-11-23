@@ -94,7 +94,7 @@ public class Menu {
 			else input=null;
 		case "STARS":
 			if(input.length==2) {
-				stars(input[1]);
+				STARS stars = new STARS(memberList.getMember(input[1]));
 				break;
 			}
 			else input=null;
@@ -139,7 +139,7 @@ public class Menu {
 			return input;
 		}
 
-	//Main driving method, where the list of members is intialized, as long as where most other methods are
+	//Main driving method, where the list of members is intialized, as well as where most other methods are
 	//running
 	public static void main(String args[]) {
 		Menu menu = new Menu();
