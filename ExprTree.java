@@ -1,14 +1,14 @@
+import java.io.*;
 import java.util.Scanner;
 import java.util.Stack;
 public class ExprTree {
 	
-	public boolean evalfun(String inputString) {
-		boolean clear = this.buildTree(inputString);
-		if (clear) {
-			return true;
-		} else {
-			return false;
-		}
+	//root of the tree
+	private ExprTreeNode root;
+	private boolean expressionSet = false;
+	
+	public boolean evalfun(String inputString) {		
+		return this.buildTree(inputString);
 	}
 	
 	private boolean buildTree(String inputString) {
@@ -58,17 +58,29 @@ public class ExprTree {
 		
 		//check translate
 		
-		for (int i = 0; i < charExprArr.length; i++) {
-			System.out.print(charExprArr[i]);
-		}
+		//for (int i = 0; i < charExprArr.length; i++) {
+			//System.out.print(charExprArr[i]);
+		//}
 		
 		String prefix = infixToPreFix(charExprArr);
-		System.out.println("\n" + prefix);
+		//System.out.println("\n" + prefix);
+		String prefixString = new String(prefix);
+		try {
+			this.build(prefixString);
+		} catch (IOException e) {
+		}
 		
-		
-		
+		expressionSet = true;
 		return validInput;
 	}
+	
+	public float evaluate ( )                // Evaluate expression   
+    {  
+    	float result=0;     
+    	if (root != null)
+    		result = this.evlauateSub(root);
+    	return result;
+    }
 	
 	//The expression key code needs the input to be in prefix notation, this will translate it for us
 	private String infixToPreFix(char[] input) {
@@ -150,4 +162,67 @@ public class ExprTree {
 		return false;
 	}
 	
+	//re used builder function for expression tree (kyle)
+	 private void build (String input) throws IOException  {      
+		 	
+	    	byte[] inputChars = input.getBytes();
+	    	ByteArrayInputStream charStream = new ByteArrayInputStream(inputChars);
+	    	try {
+	    		root=this.buildSub(charStream);
+	    	}catch (IOException e) {
+	    		System.out.println("Not enough opperands provided");
+	    	}	
+	    }
+	
+	 
+	 //helper for build
+	 private ExprTreeNode buildSub ( ByteArrayInputStream prefixString )  throws IOException {         
+	    		ExprTree n= new ExprTree();
+	    		n.root= new ExprTreeNode((char) prefixString.read(), null, null);
+	    		
+	    		if (n.root.getElement() == '+' || n.root.getElement() == '-' || n.root.getElement() == '*' || 
+	        	    n.root.getElement() == '/') {
+	    			if (n.root.getLeft()==null) {
+	    				n.root.setLeft(n.buildSub(prefixString));
+	    			}			
+	    			if (n.root.getRight()==null) {
+	    				n.root.setRight(n.buildSub(prefixString));
+	    			}	    				
+	    		}
+	    	return n.root;
+	    }
+	 
+	 private float evlauateSub(ExprTreeNode node)
+	    {
+	    	ExprTree subTree= new ExprTree();
+	    	subTree.root=node;
+	    	float result=0, num1=0, num2=0;
+	    	if (subTree.root.getElement() == '+' || subTree.root.getElement() == '-' || subTree.root.getElement() == '*' || 
+	    			subTree.root.getElement() == '/') {
+	    		if (subTree.root.getLeft() != null) {
+	    			num1=evlauateSub(subTree.root.getLeft());
+	    		}			
+	    		if (subTree.root.getRight() != null) {
+	    			num2=evlauateSub(subTree.root.getRight());
+	    		}
+	    		//do the math
+	    		if (subTree.root.getElement() == '+') {
+	    			result = num1+num2;
+	    		}
+	    		if (subTree.root.getElement() == '-') {
+	    			result= num1-num2;
+	    		}
+	    		if (subTree.root.getElement() == '*') {
+	    			result= num1*num2;
+	    		}
+	    		if (subTree.root.getElement() == '/') {
+	    			result= num1/num2;
+	    		}
+	    	}
+	    	else
+	    		result=Float.parseFloat(String.valueOf(subTree.root.getElement()));
+	    	
+	    	return result;
+	    }
+	 
 }
