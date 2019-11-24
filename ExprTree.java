@@ -63,7 +63,7 @@ public class ExprTree {
 		}
 		
 		String prefix = infixToPreFix(charExprArr);
-		System.out.println(prefix);
+		System.out.println("\n" + prefix);
 		
 		
 		
@@ -82,22 +82,43 @@ public class ExprTree {
 		//cycle through the infix char array 
 		for (int i = 0; i < input.length; i++) {
 			
+			if (input[i] == '(') {
+				operators.push(input[i]);
+			}
+			
+			//closing paren
+			if (input[i] == ')') {
+				while (!operators.empty() && operators.peek() != '(') {
+					//add operaotrs and operands together for output
+					String operand1, operand2 = "";
+					operand1 = operands.pop();
+					operand2 = operands.pop();
+					char operator = operators.pop();
+					String currentOutput = operator + operand2 + operand1;
+					operands.push(currentOutput);
+				}
+				//once it leaves the loop remove the remaining paren
+				operators.pop();
+			}
+			
 			//place operand in the right stack if it is one
 			if (!isOperator(input[i])) {
 				operands.push(Character.toString(input[i]));
+			//current char is an operator
+			} else {
+				//if it is an operator then push it to the right place in operator stack
+				while (!operators.empty() && getPriority(input[i]) <= getPriority(operators.peek())) {
+					String operand1, operand2 = "";
+					operand1 = operands.pop();
+					operand2 = operands.pop();
+					char operator = operators.pop();
+					String temp = operator + operand2 + operand1;
+					operands.push(temp);
+				}
+				operators.push(input[i]);
 			}
-			
-			//if it is an operator then push it to the right place in operator stack
-			while (!operators.empty() && getPriority(input[i]) <= getPriority(operators.peek())) {
-				String operand1, operand2;
-				operand1 = operands.pop();
-				operand2 = operands.pop();
-				char operator = operators.pop();
-				String temp = operator + operand2 + operand1;
-				operands.push(temp);
-			}
-			operators.push(input[i]);
-		} 
+		}
+		
 		//empty stack to build final string
 		while (!operators.empty()) {
 			String operand1, operand2;
