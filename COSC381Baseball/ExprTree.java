@@ -1,3 +1,4 @@
+package COSC381Baseball;
 import java.io.*;
 import java.util.Scanner;
 import java.util.Stack;
@@ -74,9 +75,9 @@ public class ExprTree {
 		return validInput;
 	}
 	
-	public float evaluate ( )                // Evaluate expression   
+	public double evaluate ( )                // Evaluate expression   
     {  
-    	float result=0;     
+    	double result=0;     
     	if (root != null)
     		result = this.evlauateSub(root);
     	return result;
@@ -192,13 +193,13 @@ public class ExprTree {
 	    	return n.root;
 	    }
 	 
-	 private float evlauateSub(ExprTreeNode node)
+	 private double evlauateSub(ExprTreeNode node)
 	    {
 	    	ExprTree subTree= new ExprTree();
 	    	subTree.root=node;
-	    	float result=0, num1=0, num2=0;
+	    	double result=0, num1=0, num2=0;
 	    	if (subTree.root.getElement() == '+' || subTree.root.getElement() == '-' || subTree.root.getElement() == '*' || 
-	    			subTree.root.getElement() == '/') {
+	    	subTree.root.getElement() == '/') {
 	    		if (subTree.root.getLeft() != null) {
 	    			num1=evlauateSub(subTree.root.getLeft());
 	    		}			
