@@ -9,8 +9,12 @@ public class Player {
 	public String name;
 	//stats tracked for ranking
 	public double avg, obp, slg, ops, era, win, loss;
+	public double rank = 0;
 	
 	//Constructor
+	public Player() {
+		
+	}
 	public Player(double RBI, double wl, String position, String name) {
 		this.RBI=RBI;
 		this.wl=wl;
@@ -71,6 +75,10 @@ public class Player {
 		loss = l;
 	}
 	
+	public void setRank(double r) {
+		rank = r;
+	}
+	
 	public double getAvg() {
 		return avg;
 	}
@@ -91,6 +99,9 @@ public class Player {
 	}
 	public double getLoss() {
 		return loss;
+	}
+	public double getRank() {
+		return rank;
 	}
 	
 	

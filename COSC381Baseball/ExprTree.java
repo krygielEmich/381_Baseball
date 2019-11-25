@@ -1,5 +1,6 @@
 package COSC381Baseball;
 import java.io.*;
+import java.util.ArrayList;
 import java.util.Scanner;
 import java.util.Stack;
 public class ExprTree {
@@ -7,6 +8,15 @@ public class ExprTree {
 	//root of the tree
 	private ExprTreeNode root;
 	private boolean expressionSet = false;
+	private ArrayList<Player> playerArray;
+	
+	public ExprTree() {
+		
+	}
+	public ExprTree(PlayerList players) {
+		playerArray = players.getPlayerList(); 
+	}
+	
 	
 	public boolean evalfun(String inputString) {		
 		return this.buildTree(inputString);
@@ -41,8 +51,6 @@ public class ExprTree {
 				charExprArr[i] = 'S';
 			} else if (inputArr[i].equals("OPS")) {
 				charExprArr[i] = 'P';
-			} else if (inputArr[i].equals("OBP")) {
-				charExprArr[i] = 'O';
 			} else if (inputArr[i].equals("+")) {
 				charExprArr[i] = '+';
 			} else if (inputArr[i].equals("-")) {
@@ -68,19 +76,24 @@ public class ExprTree {
 		String prefixString = new String(prefix);
 		try {
 			this.build(prefixString);
-		} catch (IOException e) {
-		}
+		} catch (IOException e) {}
+		
+		this.evaluate();
 		
 		expressionSet = true;
 		return validInput;
 	}
 	
-	public double evaluate ( )                // Evaluate expression   
+	private void evaluate ()                // Evaluate expression   
     {  
-    	double result=0;     
-    	if (root != null)
-    		result = this.evlauateSub(root);
-    	return result;
+    	 double result = 0;
+    	if (root != null) {
+    		//call eval sub for every player to set their rank
+    		for (int i = 0; i < playerArray.size(); i++) {
+    			result = evlauateSub(root, playerArray.get(i));
+    			playerArray.get(i).setRank(result);
+    		}
+    	}
     }
 	
 	//The expression key code needs the input to be in prefix notation, this will translate it for us
@@ -193,7 +206,7 @@ public class ExprTree {
 	    	return n.root;
 	    }
 	 
-	 private double evlauateSub(ExprTreeNode node)
+	 private double evlauateSub(ExprTreeNode node, Player player)
 	    {
 	    	ExprTree subTree= new ExprTree();
 	    	subTree.root=node;
@@ -201,10 +214,10 @@ public class ExprTree {
 	    	if (subTree.root.getElement() == '+' || subTree.root.getElement() == '-' || subTree.root.getElement() == '*' || 
 	    	subTree.root.getElement() == '/') {
 	    		if (subTree.root.getLeft() != null) {
-	    			num1=evlauateSub(subTree.root.getLeft());
+	    			num1=evlauateSub(subTree.root.getLeft(), player);
 	    		}			
 	    		if (subTree.root.getRight() != null) {
-	    			num2=evlauateSub(subTree.root.getRight());
+	    			num2=evlauateSub(subTree.root.getRight(), player);
 	    		}
 	    		//do the math
 	    		if (subTree.root.getElement() == '+') {
@@ -220,8 +233,17 @@ public class ExprTree {
 	    			result= num1/num2;
 	    		}
 	    	}
-	    	else
-	    		result=Float.parseFloat(String.valueOf(subTree.root.getElement()));
+	    	else {
+	    		if (subTree.root.getElement() == 'A') {
+	    			result = player.getAvg();
+	    		} else if (subTree.root.getElement() == 'O') {
+	    			result = player.getObp();
+	    		} else if (subTree.root.getElement() == 'S') {
+	    			result = player.getSlg();
+	    		} else if (subTree.root.getElement() == 'P') {
+	    			result = player.getOps();
+	    		} 
+	    	}
 	    	
 	    	return result;
 	    }

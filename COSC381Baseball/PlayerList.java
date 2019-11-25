@@ -35,4 +35,7 @@ public class PlayerList {
 		}
 		return x;
 	}
+	public ArrayList<Player> getPlayerList() {
+		return playerList;
+	}
 }
