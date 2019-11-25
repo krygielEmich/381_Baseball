@@ -12,7 +12,6 @@ public class PlayerList {
 		playerList.add(player);
 	}
 	
-	public PlayerList() {}
 	//Getter
 	public Player getPlayer(String name) {
 		for(int i = 0; i<playerList.size();i++) {

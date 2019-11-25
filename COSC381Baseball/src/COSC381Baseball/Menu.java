@@ -130,6 +130,7 @@ public class Menu {
 			}
 			else System.out.println("Invalid Selection!");
 			break;
+			}
 		case "POVERALL":
 			if(input.length==1) {
 
