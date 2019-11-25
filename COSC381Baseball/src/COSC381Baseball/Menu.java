@@ -1,5 +1,6 @@
 package COSC381Baseball;
 
+import java.io.*;
 import java.util.InputMismatchException;
 import java.util.Scanner;
 
@@ -179,17 +180,20 @@ public class Menu {
 			break;
 		case "SAVE":
 			if(input.length==2) {
-				//save(input[1]);
+				Save(input[1], memberList);
 				break;
 			}
 			else System.out.println("Invalid Selection!");
 			break;
 		case "QUIT":
-			this.quit = true;
+			this.quit = Quit();
+			System.out.println("Exiting Baseball Manager...");
+			System.exit(0);
 			break;
 		case "RESTORE":
 			if(input.length==2) {
-				//restore(input[1]);
+				//Set the member list
+				memberList = Restore(input[1], memberList);
 				break;
 			}
 			else System.out.println("Invalid Selection!");
@@ -235,5 +239,312 @@ public class Menu {
 			memberList.addMember(new Member(null,menu.getInput("Enter the name of Member "+i+": ")));
 		}
 		while(!menu.quit)menu.display(memberList);
+	}
+	//This method will restore the current state of the collection class in the program from the savedat.txt file
+	public MemberList Restore(String fileName, MemberList members)
+	{
+		//Retrieve the input name
+		String name = fileName;
+		
+		//Check if file currently exists /*WILL NEED TO BE CHANGED FOR TESTING*/
+		String path = "C:\\Users/conth/Documents/GitHub/COSC381Baseball/381Baseball/"+name+".fantasy.txt";
+		
+		//Create variable file
+		File file;
+		
+		//If the string at the default user's path exists (old save), use that file to overwrite
+		if(new File(path).isFile())
+		{
+			file = new File(path);
+		}
+		else
+		{
+			//If file doesnt exist, exit the restore
+			System.out.println("Unable to restore the stae of the system from file named "+
+			name+".fantasy.txt.");
+			return null;
+		}
+		
+		//Create a new scanner for the file
+		Scanner fileScan;
+		try 
+		{
+			fileScan = new Scanner(file);
+		} 
+		catch (FileNotFoundException e) 
+		{
+			e.printStackTrace();
+			System.out.println("Unable to restore the stae of the system from file named "+
+			name+".fantasy.txt.");
+			return null;
+		}
+		
+		//Set counter
+		int i = -1;
+			
+		//Check if has read in num of members
+		int numMembs = 0;
+		
+		if(i== -1 && fileScan.hasNextInt())
+		{
+			numMembs = fileScan.nextInt();
+			
+			//Move to next line
+			fileScan.nextLine();
+		}
+		
+		//RESTORING MEMBERS HERE///////////////////////////////
+		//Create new temporary member list here
+		MemberList newMembers = new MemberList();
+		
+		//Scan for and restore out all members in the save file
+		for(int j = 0; j < numMembs; j++)
+		{
+			//Create empty new member playerList
+			PlayerList newMemPlayerList = new PlayerList();
+			
+			//Now retrieving all player data
+			if(fileScan.hasNextLine())
+			{
+				//Create empty array of values from line
+				String[] tempMember = fileScan.nextLine().split(" ");
+				
+				//Check if has player data
+				if(tempMember[1].equalsIgnoreCase("Start"))
+				{
+					
+					//Player Data exists for this member, begin loop for player data
+					while(!fileScan.next().equalsIgnoreCase("End"))
+					{
+						if(fileScan.hasNextLine())
+						{
+							//Create empty array of values from line
+							String[] newTempPlayer = fileScan.nextLine().split(" ");
+
+							//Now Create new player class and retrieve converted data
+							Player newGuy = new Player();
+							newGuy = this.ToPlayerList(newTempPlayer);
+							
+							//Add to new list
+							newMemPlayerList.addPlayer(newGuy);
+						}
+					}
+				}
+				
+				//Now Create new member class and retrieve converted data
+				Member newMem = new Member();
+				
+				//Add the new player list	
+				newMem = this.ToMemberList(tempMember);
+				
+				newMem.playerList = newMemPlayerList;
+				
+				//Add to new list
+				newMembers.addMember(newMem);
+			}
+		}
+		
+		//RESTORING PLAYERS HERE///////////////////////////////
+		//Create new empty playerList
+		PlayerList newList = new PlayerList();
+		
+		//While file is scanning, store values into proper places
+		while(fileScan.hasNext())
+		{	
+			//Now retrieving all player data
+			if(fileScan.hasNextLine())
+			{
+				//Create empty array of values from line
+				String[] tempPlayer = fileScan.nextLine().split(" ");
+
+				//Now Create new player class and retrieve converted data
+				Player newGuy = new Player();
+				newGuy = this.ToPlayerList(tempPlayer);
+				
+				//Add to new list
+				newList.addPlayer(newGuy);
+			}
+		}
+		
+		//Now update mlbdata with new player list
+		this.mlbList = newList;
+		
+		//Once file no longer has any values, close the scanner
+		fileScan.close();
+		
+		//Print confirmation of successful restore
+		System.out.println("The state of the system has been restore from"+name+".fantasy.txt.");
+		
+		//Now update the members list
+		return newMembers;
+	}
+	
+	//This method will save the current state of the collection class and the program to a .txt file
+	public boolean Save(String fileName, MemberList members)
+	{
+		//Retrieve the file name
+		String name = fileName;
+		
+		//Check if file currently exists /*WILL NEED TO BE CHANGED FOR TESTING*/
+		String path = "C:\\Users/conth/Documents/GitHub/COSC381Baseball/381Baseball/"+name+".fantasy.txt";
+		
+		//Create variable file
+		File file;
+		
+		//If the string at the default user's path exists (old save), use that file to overwrite
+		if(new File(path).isFile())
+		{
+			file = new File(path);
+		}
+		else
+		{
+			//Else, create the default file save name
+			file = new File(fileName+".fantasy.txt");
+		}
+
+		//Create a new buffered writer to write the save data to the file
+		try 
+		{
+			BufferedWriter out = new BufferedWriter(new  FileWriter(file));
+			
+			//Retrieve string of text for save file
+			String str = this.DraftToString(members);
+			
+			//write to the file
+			out.write(str);
+			
+			//close the writer
+			out.close();
+			
+			System.out.println("The state of the system has been save in "+name+".fantasy.txt.");
+			return true;
+		} 
+		catch (IOException e) 
+		{
+			e.printStackTrace();
+			System.out.println("Unable to save the state of the system to file "+name+".fantasy.txt.");
+			return false;
+		}
+	}
+	//Make string of text that will be written to the save file	
+	private Player ToPlayerList(String[] player)
+	{
+		//Create the empty player class
+		Player guy = new Player();
+		
+		//For loop with a switch statement to sort values into strings
+		for(int i = 0; i< player.length; i++)
+		{
+			switch(i)
+			{
+				case 0:
+					guy.name = player[i];
+					break;
+				case 1:
+					guy.team = player[i];
+					break;
+				case 2:
+					guy.position = player[i];
+					break;
+				case 3:
+					guy.obp = Float.valueOf(player[i]);
+					break;
+				case 4:
+					guy.slg = Float.valueOf(player[i]);
+					break;
+				case 5:
+					guy.ops =  Float.valueOf(player[i]);
+					break;
+				case 6:
+					guy.avg = Float.valueOf(player[i]);
+					break;
+				default:
+					System.out.println("Error, should not have this many values");
+					break;
+			}
+		}
+	    //Return the player
+		return guy;
+	}
+	//Make string of text that will be written to the save file	
+	private Member ToMemberList(String[] member)
+	{
+		//Create the empty member class
+		Member user = new Member();
+		
+		user.name = member[0];
+		
+	    //Return the member
+		return user;
+	}
+
+	//Make string of text that will be written to the save file	
+	private String DraftToString(MemberList members)
+	{
+		//Create the string
+		String text = "";
+		
+		//First, append to string of members and their player lists
+		text+= MembersToString(members);
+		
+		//Next, append toString of all players in the mlb list
+		text+= PlayersToString(this.mlbList);
+		
+	    //Return the string
+		return text;
+	}
+	//Make string of text that will be written to the save file	
+	private String MembersToString(MemberList members)
+	{
+		//Create the string
+		String text = "";
+		
+		//First, save the number of members on the first line
+		text+= members.memberList.size()+"\n";
+		
+		for(int i = 0; i< members.memberList.size(); i++)
+		{
+			Member temp = members.memberList.get(i);
+			text+= temp.name;
+			
+			//If member has a player list, print start and end and print out members
+			if(temp.playerList != null)
+			{
+				text+="Start\n";
+				text+= members.memberList.get(i).playerList.toStringSave()+"\n";
+				text+="End\n";
+			}
+			else
+			{
+				text+= " NULL\n";
+			}	
+		}
+	    //Return the string
+		return text;
+	}
+	//Make string of text that will be written to the save file	
+	private String PlayersToString(PlayerList players)
+	{
+		//Create the string
+		String text = "";
+		
+		text+= "\n"+players.toStringSave();
+		
+	    //Return the string
+		return text;
+	}
+	
+	public boolean Quit()
+	{
+		if(this.quit == false)
+		{
+			//Set true
+			return true;
+		}
+		else
+		{
+			//Already true, still return true
+			return true;
+		}
 	}
 }

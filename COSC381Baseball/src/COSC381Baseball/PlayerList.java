@@ -55,6 +55,15 @@ public class PlayerList {
 		}
 		return x;
 	}
+	//Prints out all the players in the list
+		public String toStringSave() 
+		{
+			String x = "";
+			for(int i = 0; i<playerList.size();i++) {
+				x+=playerList.get(i).toStringSave();
+			}
+			return x;
+		}
 	public ArrayList<Player> getPlayerList() {
 		return playerList;
 	}

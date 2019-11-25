@@ -9,6 +9,10 @@ ArrayList<Member> memberList = new ArrayList<Member>();
 	public MemberList(Member member) {
 		memberList.add(member);
 	}
+	public MemberList() 
+	{
+		
+	}
 	//Getter
 	public Member getMember(String name) {
 		for(int i = 0; i<memberList.size();i++) {

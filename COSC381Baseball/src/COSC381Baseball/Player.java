@@ -7,11 +7,11 @@ public class Player {
 	public double RBI;//Runs Batted in
 	public double wl;//Win/Loss Ratio
 	public String position;
+	public String team;
 	public String name;
 	//stats tracked for ranking
-	private double avg, obp, slg, ops, er, era, k, bb;
+	public double avg, obp, slg, ops, er, era, k, bb;
 	private double rank = 0;
-	private String team;
 	
 	//Constructor
 	public Player() {
@@ -30,6 +30,11 @@ public class Player {
 	public String toString() {
 		String x = "";
 			x+= this.name+" "+this.position+" W/L: "+wl+" RBI: "+RBI+"\n";
+		return x;
+	}
+	public String toStringSave() {
+		String x = "";
+			x+= this.name+" "+this.position+" "+wl+" "+RBI+"\n";
 		return x;
 	}
 	//Setters/Getters

@@ -9,6 +9,10 @@ public class Member {
 		this.playerList= new PlayerList();
 		this.name = name;
 	}
+	public Member() 
+	{
+		
+	}
 	//Getter
 	public String getName() {
 		return this.name;
