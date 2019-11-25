@@ -11,10 +11,9 @@ ArrayList<Member> memberList = new ArrayList<Member>();
 	}
 	//Getter
 	public Member getMember(String name) {
-		for(int i = 0; i<=memberList.size();i++) {
+		for(int i = 0; i<memberList.size();i++) {
 			if(memberList.get(i).getName().equalsIgnoreCase(name))return memberList.get(i);
 		}
-		System.out.print("Player not found");
 		return null;
 	}
 	//Adds a Member to the end of the list

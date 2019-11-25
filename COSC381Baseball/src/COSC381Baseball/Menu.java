@@ -5,12 +5,12 @@ import java.util.Scanner;
 
 public class Menu {
 	private boolean quit=false;
-	Scanner stdIn=new Scanner(System.in);
 	public PlayerList mlbList;
 
 	//Starts with the program, prompts user for what amount of members there are in the league
 	//@return int input, has to be a positive integer
 	public int initialize() {
+		Scanner stdIn=new Scanner(System.in);
 		int input = 0;
 		initializeMLBList();
 		System.out.print("How many members are drafting: ");
@@ -36,6 +36,7 @@ public class Menu {
 	//Code recycled from last project with some tweaks, uses switch statement and splits 
 	//arguments into String input
 	public void display(MemberList memberList) {
+		Scanner stdIn=new Scanner(System.in);
 		System.out.println("\nPossible Commands:");
 		System.out.println(
 				  "ODRAFT (Player Name) (Member Name)\n"
@@ -51,68 +52,91 @@ public class Menu {
 				+ "PEVALFUN (Expression)\n");
 		String[] input = null;
 		String selection;
-		if(stdIn.hasNext()) {
-			input = stdIn.next().split(" ");
-			selection=input[0];
-		}
-		else {
-			selection="null";
-		}
-		stdIn.nextLine();
+		String userIn = stdIn.nextLine();
+		input = userIn.split(" ");
+		selection=input[0];
 		switch(selection) {
 		case "ODRAFT":
-			if(input.length==3&&mlbList.exists(input[1])&&!mlbList.getPlayer(input[1]).getDrafted()) {
-				ODraft oDraft = new ODraft(mlbList.getPlayer(input[1]),memberList.getMember(input[2]));
-				mlbList.getPlayer(input[1]).setDrafted(true);
+			if(input.length==3) {
+				if(memberList.getMember(input[2])==null) {
+					System.out.println("Member doesn't exist");
+					break;
+				}
+				ODraft oDraft = new ODraft(mlbList.getPlayer(input[1]),memberList.getMember(input[2]),mlbList);
+				if(oDraft.getValidInput())mlbList.getPlayer(input[1]).setDrafted(true);
 				break;
 			}
-			else input=null;
+			else System.out.println("Invalid Selection!");
+			break;
 		case "IDRAFT":
-			if(input.length==3&&mlbList.exists(input[1])&&!mlbList.getPlayer(input[1]).getDrafted()) {
-				ODraft oDraft = new ODraft(mlbList.getPlayer(input[1]),memberList.memberList.get(0));
-				mlbList.getPlayer(input[1]).setDrafted(true);
+			if(input.length==2) {
+				ODraft oDraft = new ODraft(mlbList.getPlayer(input[1]),memberList.memberList.get(0),mlbList);
+				if(oDraft.getValidInput())mlbList.getPlayer(input[1]).setDrafted(true);
 				break;
 			}
-			else input=null;
+			else System.out.println("Invalid Selection!");
+			break;
 		case "OVERALL":
 			if(input.length==2) {
-				overall(input[1]);
+				//overall(input[1]);
 				break;
 			}
-			else input=null;
+			else System.out.println("Invalid Selection!");
+			break;
 		case "POVERALL":
 			if(input.length==1) {
-				poverall();
+				//poverall();
 				break;
 			}
-			else input=null;
+			else System.out.println("Invalid Selection!");
+			break;
 		case "TEAM":
 			if(input.length==2) {
-				team(input[1]);
+				if(memberList.getMember(input[1])==null) {
+					System.out.println("Member doesn't exist");
+					break;
+				}
+				if(memberList.getMember(input[1]).playerList==null) {
+					System.out.println("No players draft!\n");
+					break;
+				}
+				Team team = new Team(memberList.getMember(input[1]));
 				break;
 			}
-			else input=null;
+			else System.out.println("Invalid Selection!");
+			break;
 		case "STARS":
 			if(input.length==2) {
+				if(memberList.getMember(input[1])==null) {
+					System.out.println("Member doesn't exist");
+					break;
+				}
+				if(memberList.getMember(input[1]).playerList==null) {
+					System.out.println("No players draft!\n");
+					break;
+				}
 				STARS stars = new STARS(memberList.getMember(input[1]));
 				break;
 			}
-			else input=null;
+			else System.out.println("Invalid Selection!");
+			break;
 		case "SAVE":
 			if(input.length==2) {
-				save(input[1]);
+				//save(input[1]);
 				break;
 			}
-			else input=null;
+			else System.out.println("Invalid Selection!");
+			break;
 		case "QUIT":
 			this.quit = true;
 			break;
 		case "RESTORE":
 			if(input.length==2) {
-				restore(input[1]);
+				//restore(input[1]);
 				break;
 			}
-			else input=null;
+			else System.out.println("Invalid Selection!");
+			break;
 		//These two are gonna be trickier... just placeholders for now
 		case "EVALFUN":
 			if(input.length==2) {
@@ -120,14 +144,16 @@ public class Menu {
 				evalTree.evalfun("ignore");
 				break;
 			}
-			else input=null;
+			else System.out.println("Invalid Selection!");
+			break;
 		case "PEVALFUN":
 			if(input.length==2) {
 				ExprTree evalTree = new ExprTree(mlbList);
 				evalTree.pEvalfun("ignore");
 				break;
 			}
-			else input=null;
+			else System.out.println("Invalid Selection!");
+			break;
 		default:
 			System.out.println("Invalid Selection!");
 			break;
@@ -135,6 +161,7 @@ public class Menu {
 	}
 		//Helper method for whenever we need a user to input a String
 		public String getInput(String x) throws InputMismatchException{
+			Scanner stdIn=new Scanner(System.in);
 			String input = "";
 			System.out.print(x);
 			input = stdIn.next();
