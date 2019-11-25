@@ -1,6 +1,7 @@
 package COSC381Baseball;
 
 import java.util.ArrayList;
+import java.util.Comparator;
 public class PlayerList {
 	
 	ArrayList<Player> playerList = new ArrayList<Player>();
@@ -9,6 +10,8 @@ public class PlayerList {
 	public PlayerList(Player player) {
 		playerList.add(player);
 	}
+	
+	public PlayerList() {}
 	//Getter
 	public Player getPlayer(String name) {
 		for(int i = 0; i<=playerList.size();i++) {
@@ -38,4 +41,7 @@ public class PlayerList {
 	public ArrayList<Player> getPlayerList() {
 		return playerList;
 	}
+	
+	
+	
 }

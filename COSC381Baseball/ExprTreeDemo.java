@@ -12,7 +12,7 @@ public class ExprTreeDemo {
 		test1.setAvg(1);
 		test1.setObp(2);
 		test1.setSlg(3);
-		test1.setOps(4);
+		test1.setOps(44);
 		
 		test2.setAvg(1);
 		test2.setObp(2);
@@ -27,7 +27,8 @@ public class ExprTreeDemo {
 		test4.setAvg(1);
 		test4.setObp(2);
 		test4.setSlg(3);
-		test4.setOps(7);
+		test4.setOps(77);
+		test4.setDrafted(true);
 		
 		Player p1 = new Player();
 		Player p2 = new Player();
@@ -79,9 +80,15 @@ public class ExprTreeDemo {
 		testWithPlayers.pEvalfun("ignore");
 		
 		//print out ranks
-		System.out.println("Printing ranks. should expect 10-13 then negatives");
+		System.out.println("Printing ranks. ");
 		for (int i = 0; i < players.getPlayerList().size(); i++) {
-			System.out.println(players.getPlayerList().get(i).getRank());
+			//System.out.println(players.getPlayerList().get(i).getRank());
 		}
+		
+		//test overall no input
+		Overalls overall = new Overalls(players);
+		overall.overall("");
+		System.out.println("====now pitchers====");
+		overall.pOverall();
 	}
 }

@@ -8,8 +8,9 @@ public class Player {
 	public String position;
 	public String name;
 	//stats tracked for ranking
-	public double avg, obp, slg, ops, era, win, loss;
-	public double rank = 0;
+	private double avg, obp, slg, ops, era, win, loss;
+	private double rank = 0;
+	private String team;
 	
 	//Constructor
 	public Player() {
@@ -30,6 +31,9 @@ public class Player {
 		return x;
 	}
 	//Setters/Getters
+	public void setTeam(String team) {
+		this.team = team;
+	}
 	public void setDrafted(boolean drafted) {
 		this.drafted=drafted;
 	}
@@ -106,6 +110,10 @@ public class Player {
 	public double getRank() {
 		return rank;
 	}
+	public String getTeam() {
+		return team;
+	}
+	
 	
 	
 }
