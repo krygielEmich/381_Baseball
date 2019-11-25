@@ -33,13 +33,13 @@ public class ExprTree {
 		//gather the input
 		if (inputString.equals("ignore")) {
 			if (!isPitcher) {
-				System.out.println("Please enter the expression you would like to use for ranking players. ");
+				System.out.println("Please enter the expression you would like to use for non pitchers. ");
 				System.out.println("The supported stats are: AVG, OBP, SLG, and OPS. Please insert a space between each part. ");
 				System.out.println("E.g. AVG * OBP + SLG / OPS");
 			} else {
-				System.out.println("Please enter the expression you would like to use for ranking players. ");
+				System.out.println("Please enter the expression you would like to use for ranking pitchers.");
 				System.out.println("The supported stats are: AVG, ERA, W, L. Please insert a space between each part. ");
-				System.out.println("E.g. AVG * ERA + W / L");
+				System.out.println("E.g. K * ERA + ER / BB");
 			}
 			Scanner keyboard = new Scanner(System.in);
 			inputExpr = keyboard.nextLine();
@@ -76,14 +76,14 @@ public class ExprTree {
 					return false;
 				}
 			} else {//is pitcher
-				if (inputArr[i].equals("AVG")) {
-					charExprArr[i] = 'A';
-				} else if (inputArr[i].equals("ERA")) {
+				if (inputArr[i].equals("ER")) {
 					charExprArr[i] = 'E';
-				} else if (inputArr[i].equals("W")) {
-					charExprArr[i] = 'W';
-				} else if (inputArr[i].equals("L")) {
-					charExprArr[i] = 'L';
+				} else if (inputArr[i].equals("ERA")) {
+					charExprArr[i] = 'R';
+				} else if (inputArr[i].equals("K")) {
+					charExprArr[i] = 'K';
+				} else if (inputArr[i].equals("BB")) {
+					charExprArr[i] = 'B';
 				} else if (inputArr[i].equals("+")) {
 					charExprArr[i] = '+';
 				} else if (inputArr[i].equals("-")) {
@@ -98,12 +98,6 @@ public class ExprTree {
 				}
 			}
 		}
-		
-		//check translate
-		
-		//for (int i = 0; i < charExprArr.length; i++) {
-			//System.out.print(charExprArr[i]);
-		//}
 		
 		String prefix = infixToPreFix(charExprArr);
 		String prefixString = new String(prefix);
@@ -126,12 +120,12 @@ public class ExprTree {
     			Player currentPlayer = playerArray.get(i);
     			//check if this is being run for pitchers, if it is then only set the rank for them
     			if (isPitcher) {
-    				if (currentPlayer.getPosition().equals("pitcher")) {
+    				if (currentPlayer.getPosition().equals("P")) {
     					result = evlauateSub(root, playerArray.get(i));
     	    			playerArray.get(i).setRank(result);
     				}
     			} else {
-    				if (!currentPlayer.getPosition().equals("pitcher")) {
+    				if (!currentPlayer.getPosition().equals("P")) {
     					result = evlauateSub(root, playerArray.get(i));
     	    			playerArray.get(i).setRank(result);
     				}
@@ -288,11 +282,11 @@ public class ExprTree {
 	    		} else if (subTree.root.getElement() == 'P') {
 	    			result = player.getOps();
 	    		}  else if (subTree.root.getElement() == 'E') {
-	    			result = player.getEra();
-	    		}  else if (subTree.root.getElement() == 'W') {
-	    			result = player.getWin();
-	    		}  else if (subTree.root.getElement() == 'L') {
-	    			result = player.getLoss();
+	    			result = player.getEr();
+	    		}  else if (subTree.root.getElement() == 'B') {
+	    			result = player.getBb();
+	    		}  else if (subTree.root.getElement() == 'K') {
+	    			result = player.getK();
 	    		} 
 	    	}	    	
 	    	return result;

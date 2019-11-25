@@ -32,6 +32,45 @@ public class Menu {
 		mlbList = new PlayerList(new Player(365, 10, "C", "J.Martinez"));
 		mlbList.addPlayer(new Player(114,19,"P","J.Verlander"));
 		mlbList.addPlayer(new Player(125,13,"1B","M.Cabrera"));
+		
+		//more test data
+		Player testPlayer1 = new Player();
+		testPlayer1.setPositon("C");
+		testPlayer1.setObp(3);
+		testPlayer1.setSlg(6);
+		testPlayer1.setOps(67.1);
+		testPlayer1.setAvg(9);
+		testPlayer1.setName("Kyle");
+		
+		Player testPlayer2 = new Player();
+		testPlayer2.setPositon("1B");
+		testPlayer2.setObp(3);
+		testPlayer2.setSlg(6);
+		testPlayer2.setOps(0.8);
+		testPlayer2.setAvg(9);
+		testPlayer2.setName("Connor");
+		
+		Player testPlayer3 = new Player();
+		testPlayer3.setPositon("P");
+		testPlayer3.setBb(3);
+		testPlayer3.setEr(6);
+		testPlayer3.setEra(6);
+		testPlayer3.setK(9.2);
+		testPlayer3.setName("Patrick");
+
+		Player testPlayer4 = new Player();
+		testPlayer4.setPositon("P");
+		testPlayer4.setBb(3.5);
+		testPlayer4.setEr(1);
+		testPlayer4.setEra(7);
+		testPlayer4.setK(49);
+		testPlayer4.setName("Matt");
+		
+		mlbList.addPlayer(testPlayer1);
+		mlbList.addPlayer(testPlayer2);
+		mlbList.addPlayer(testPlayer3);
+		mlbList.addPlayer(testPlayer4);
+		
 	}
 	//Code recycled from last project with some tweaks, uses switch statement and splits 
 	//arguments into String input
@@ -75,20 +114,24 @@ public class Menu {
 			}
 			else input=null;
 		case "OVERALL":
-			if(input.length==2) {
-				overall(input[1]);
+			if(input.length==1) {
+				Overalls overall = new Overalls(mlbList);
+				System.out.println("Enter the position you would like to display. Press enter to display all ");
+				String position = stdIn.nextLine();
+				overall.overall(position);
 				break;
 			}
 			else input=null;
 		case "POVERALL":
 			if(input.length==1) {
-				poverall();
+				Overalls overall = new Overalls(mlbList);
+				overall.pOverall();
 				break;
 			}
 			else input=null;
 		case "TEAM":
 			if(input.length==2) {
-				team(input[1]);
+				//team(input[1]);
 				break;
 			}
 			else input=null;
@@ -100,7 +143,7 @@ public class Menu {
 			else input=null;
 		case "SAVE":
 			if(input.length==2) {
-				save(input[1]);
+				//save(input[1]);
 				break;
 			}
 			else input=null;
@@ -109,20 +152,20 @@ public class Menu {
 			break;
 		case "RESTORE":
 			if(input.length==2) {
-				restore(input[1]);
+				//restore(input[1]);
 				break;
 			}
 			else input=null;
 		//These two are gonna be trickier... just placeholders for now
 		case "EVALFUN":
-			if(input.length==2) {
+			if(input.length==1) {
 				ExprTree evalTree = new ExprTree(mlbList);
 				evalTree.evalfun("ignore");
 				break;
 			}
 			else input=null;
 		case "PEVALFUN":
-			if(input.length==2) {
+			if(input.length==1) {
 				ExprTree evalTree = new ExprTree(mlbList);
 				evalTree.pEvalfun("ignore");
 				break;

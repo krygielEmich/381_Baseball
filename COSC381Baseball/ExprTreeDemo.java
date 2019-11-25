@@ -35,24 +35,24 @@ public class ExprTreeDemo {
 		Player p3 = new Player();
 		Player p4 = new Player();
 		
-		p1.setAvg(1);
-		p1.setWin(2);
-		p1.setLoss(25);
+		p1.setK(1);
+		p1.setEr(2);
+		p1.setBb(256);
 		p1.setEra(4);
 		
-		p2.setAvg(1);
-		p2.setWin(2);
-		p2.setLoss(25);
+		p2.setK(1);
+		p2.setEr(2);
+		p2.setBb(29);
 		p2.setEra(5);
 		
-		p3.setAvg(1);
-		p3.setWin(2);
-		p3.setLoss(25);
+		p3.setK(1);
+		p3.setEr(2);
+		p3.setBb(25.3);
 		p3.setEra(6);
 		
-		p4.setAvg(1);
-		p4.setWin(2);
-		p4.setLoss(25);
+		p4.setK(1);
+		p4.setEr(2);
+		p4.setBb(25.8);
 		p4.setEra(7);
 		
 		p1.setPositon("pitcher");
@@ -76,7 +76,7 @@ public class ExprTreeDemo {
 		players.addPlayer(p4);
 		
 		ExprTree testWithPlayers = new ExprTree(players);
-		testWithPlayers.evalfun("ignore");
+		//testWithPlayers.evalfun("ignore");
 		testWithPlayers.pEvalfun("ignore");
 		
 		//print out ranks
@@ -87,7 +87,7 @@ public class ExprTreeDemo {
 		
 		//test overall no input
 		Overalls overall = new Overalls(players);
-		overall.overall("");
+		//overall.overall("");
 		System.out.println("====now pitchers====");
 		overall.pOverall();
 	}

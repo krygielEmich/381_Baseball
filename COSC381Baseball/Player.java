@@ -8,7 +8,7 @@ public class Player {
 	public String position;
 	public String name;
 	//stats tracked for ranking
-	private double avg, obp, slg, ops, era, win, loss;
+	private double avg, obp, slg, ops, er, era, k, bb;
 	private double rank = 0;
 	private String team;
 	
@@ -52,6 +52,9 @@ public class Player {
 	public String getName() {
 		return this.name;
 	}
+	public void setName(String name) {
+		this.name = name;
+	}
 	//stats
 	public void setPositon(String pos) {
 		position = pos;
@@ -74,14 +77,6 @@ public class Player {
 		era = e;
 	}
 	
-	public void setWin(double w) {
-		win = w;
-	}
-	
-	public void setLoss(double l) {
-		loss = l;
-	}
-	
 	public void setRank(double r) {
 		rank = r;
 	}
@@ -101,17 +96,29 @@ public class Player {
 	public double getEra() {
 		return era;
 	}
-	public double getWin() {
-		return win;
-	}
-	public double getLoss() {
-		return loss;
-	}
 	public double getRank() {
 		return rank;
 	}
 	public String getTeam() {
 		return team;
+	}
+	public double getEr() {
+		return er;
+	}
+	public void setEr(double er) {
+		this.er = er;
+	}
+	public double getK() {
+		return k;
+	}
+	public void setK(double k) {
+		this.k = k;
+	}
+	public double getBb() {
+		return bb;
+	}
+	public void setBb(double bb) {
+		this.bb = bb;
 	}
 	
 	
