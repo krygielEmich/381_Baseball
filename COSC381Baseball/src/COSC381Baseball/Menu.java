@@ -246,21 +246,20 @@ public class Menu {
 		//Retrieve the input name
 		String name = fileName;
 		
-		//Check if file currently exists /*WILL NEED TO BE CHANGED FOR TESTING*/
-		String path = "C:\\Users/conth/Documents/GitHub/COSC381Baseball/381Baseball/"+name+".fantasy.txt";
-		
 		//Create variable file
 		File file;
 		
+		file = new File(name+".fantasy.txt");
+		
 		//If the string at the default user's path exists (old save), use that file to overwrite
-		if(new File(path).isFile())
+		if(file.isFile())
 		{
-			file = new File(path);
+			//do
 		}
 		else
 		{
 			//If file doesnt exist, exit the restore
-			System.out.println("Unable to restore the stae of the system from file named "+
+			System.out.println("Path Not Found: Unable to restore the state of the system from file named "+
 			name+".fantasy.txt.");
 			return null;
 		}
@@ -274,7 +273,7 @@ public class Menu {
 		catch (FileNotFoundException e) 
 		{
 			e.printStackTrace();
-			System.out.println("Unable to restore the stae of the system from file named "+
+			System.out.println("File Not Found: Unable to restore the state of the system from file named "+
 			name+".fantasy.txt.");
 			return null;
 		}
@@ -373,7 +372,7 @@ public class Menu {
 		fileScan.close();
 		
 		//Print confirmation of successful restore
-		System.out.println("The state of the system has been restore from"+name+".fantasy.txt.");
+		System.out.println("The state of the system has been restore from "+name+".fantasy.txt.");
 		
 		//Now update the members list
 		return newMembers;
@@ -385,16 +384,15 @@ public class Menu {
 		//Retrieve the file name
 		String name = fileName;
 		
-		//Check if file currently exists /*WILL NEED TO BE CHANGED FOR TESTING*/
-		String path = "C:\\Users/conth/Documents/GitHub/COSC381Baseball/381Baseball/"+name+".fantasy.txt";
-		
 		//Create variable file
 		File file;
 		
+		file = new File(name+".fantasy.txt");
+		
 		//If the string at the default user's path exists (old save), use that file to overwrite
-		if(new File(path).isFile())
+		if(file.isFile())
 		{
-			file = new File(path);
+			//do
 		}
 		else
 		{
@@ -510,7 +508,7 @@ public class Menu {
 			//If member has a player list, print start and end and print out members
 			if(temp.playerList != null)
 			{
-				text+="Start\n";
+				text+=" Start\n";
 				text+= members.memberList.get(i).playerList.toStringSave()+"\n";
 				text+="End\n";
 			}
