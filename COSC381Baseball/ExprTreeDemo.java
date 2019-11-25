@@ -29,15 +29,57 @@ public class ExprTreeDemo {
 		test4.setSlg(3);
 		test4.setOps(7);
 		
+		Player p1 = new Player();
+		Player p2 = new Player();
+		Player p3 = new Player();
+		Player p4 = new Player();
+		
+		p1.setAvg(1);
+		p1.setWin(2);
+		p1.setLoss(25);
+		p1.setEra(4);
+		
+		p2.setAvg(1);
+		p2.setWin(2);
+		p2.setLoss(25);
+		p2.setEra(5);
+		
+		p3.setAvg(1);
+		p3.setWin(2);
+		p3.setLoss(25);
+		p3.setEra(6);
+		
+		p4.setAvg(1);
+		p4.setWin(2);
+		p4.setLoss(25);
+		p4.setEra(7);
+		
+		p1.setPositon("pitcher");
+		p2.setPositon("pitcher");
+		p3.setPositon("pitcher");
+		p4.setPositon("pitcher");
+		test1.setPositon("yeet");
+		test2.setPositon("yeet");
+		test3.setPositon("yeet");		
+		test4.setPositon("yeet");
+
+
+		
 		PlayerList players = new PlayerList(test1);
 		players.addPlayer(test2);
 		players.addPlayer(test3);
 		players.addPlayer(test4);
+		players.addPlayer(p1);
+		players.addPlayer(p2);
+		players.addPlayer(p3);
+		players.addPlayer(p4);
 		
 		ExprTree testWithPlayers = new ExprTree(players);
 		testWithPlayers.evalfun("ignore");
+		testWithPlayers.pEvalfun("ignore");
 		
 		//print out ranks
+		System.out.println("Printing ranks. should expect 10-13 then negatives");
 		for (int i = 0; i < players.getPlayerList().size(); i++) {
 			System.out.println(players.getPlayerList().get(i).getRank());
 		}

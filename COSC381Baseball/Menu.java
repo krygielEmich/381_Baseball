@@ -116,13 +116,15 @@ public class Menu {
 		//These two are gonna be trickier... just placeholders for now
 		case "EVALFUN":
 			if(input.length==2) {
-				evalFun(input[1]);
+				ExprTree evalTree = new ExprTree(mlbList);
+				evalTree.evalfun("ignore");
 				break;
 			}
 			else input=null;
 		case "PEVALFUN":
 			if(input.length==2) {
-				pEvalFun(input[1]);
+				ExprTree evalTree = new ExprTree(mlbList);
+				evalTree.pEvalfun("ignore");
 				break;
 			}
 			else input=null;

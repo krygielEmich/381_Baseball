@@ -19,18 +19,28 @@ public class ExprTree {
 	
 	
 	public boolean evalfun(String inputString) {		
-		return this.buildTree(inputString);
+		return this.buildTree(inputString, false);
 	}
 	
-	private boolean buildTree(String inputString) {
+	public boolean pEvalfun(String inputString) {
+		return this.buildTree(inputString, true);
+	}
+	
+	private boolean buildTree(String inputString, boolean isPitcher) {
 		
 		boolean validInput = true;
 		String inputExpr = "";
 		//gather the input
 		if (inputString.equals("ignore")) {
-			System.out.println("Please enter the expression you would like to use for ranking players. ");
-			System.out.println("The supported stats are: AVG, OBP, SLG, and OPS. Please insert a space between each part. ");
-			System.out.println("E.g. AVG * OBP + SLG / OPS");
+			if (!isPitcher) {
+				System.out.println("Please enter the expression you would like to use for ranking players. ");
+				System.out.println("The supported stats are: AVG, OBP, SLG, and OPS. Please insert a space between each part. ");
+				System.out.println("E.g. AVG * OBP + SLG / OPS");
+			} else {
+				System.out.println("Please enter the expression you would like to use for ranking players. ");
+				System.out.println("The supported stats are: AVG, ERA, W, L. Please insert a space between each part. ");
+				System.out.println("E.g. AVG * ERA + W / L");
+			}
 			Scanner keyboard = new Scanner(System.in);
 			inputExpr = keyboard.nextLine();
 		}
@@ -43,25 +53,49 @@ public class ExprTree {
 		}
 		char[] charExprArr = new char[inputArr.length];
 		for (int i = 0; i < inputArr.length; i++) {
-			if (inputArr[i].equals("AVG")) {
-				charExprArr[i] = 'A';
-			} else if (inputArr[i].equals("OBP")) {
-				charExprArr[i] = 'O';
-			} else if (inputArr[i].equals("SLG")) {
-				charExprArr[i] = 'S';
-			} else if (inputArr[i].equals("OPS")) {
-				charExprArr[i] = 'P';
-			} else if (inputArr[i].equals("+")) {
-				charExprArr[i] = '+';
-			} else if (inputArr[i].equals("-")) {
-				charExprArr[i] = '-';
-			} else if (inputArr[i].equals("/")) {
-				charExprArr[i] = '/';
-			} else if (inputArr[i].equals("*")) {
-				charExprArr[i] = '*';
-			} else {
-				System.out.println("Invalid expression entered. Please check your expression and try again");
-				return false;
+			//non pitcher route
+			if (!isPitcher) {
+				if (inputArr[i].equals("AVG")) {
+					charExprArr[i] = 'A';
+				} else if (inputArr[i].equals("OBP")) {
+					charExprArr[i] = 'O';
+				} else if (inputArr[i].equals("SLG")) {
+					charExprArr[i] = 'S';
+				} else if (inputArr[i].equals("OPS")) {
+					charExprArr[i] = 'P';
+				} else if (inputArr[i].equals("+")) {
+					charExprArr[i] = '+';
+				} else if (inputArr[i].equals("-")) {
+					charExprArr[i] = '-';
+				} else if (inputArr[i].equals("/")) {
+					charExprArr[i] = '/';
+				} else if (inputArr[i].equals("*")) {
+					charExprArr[i] = '*';
+				} else {
+					System.out.println("Invalid expression entered. Please check your expression and try again");
+					return false;
+				}
+			} else {//is pitcher
+				if (inputArr[i].equals("AVG")) {
+					charExprArr[i] = 'A';
+				} else if (inputArr[i].equals("ERA")) {
+					charExprArr[i] = 'E';
+				} else if (inputArr[i].equals("W")) {
+					charExprArr[i] = 'W';
+				} else if (inputArr[i].equals("L")) {
+					charExprArr[i] = 'L';
+				} else if (inputArr[i].equals("+")) {
+					charExprArr[i] = '+';
+				} else if (inputArr[i].equals("-")) {
+					charExprArr[i] = '-';
+				} else if (inputArr[i].equals("/")) {
+					charExprArr[i] = '/';
+				} else if (inputArr[i].equals("*")) {
+					charExprArr[i] = '*';
+				} else {
+					System.out.println("Invalid expression entered. Please check your expression and try again");
+					return false;
+				}
 			}
 		}
 		
@@ -72,26 +106,37 @@ public class ExprTree {
 		//}
 		
 		String prefix = infixToPreFix(charExprArr);
-		//System.out.println("\n" + prefix);
 		String prefixString = new String(prefix);
 		try {
 			this.build(prefixString);
 		} catch (IOException e) {}
 		
-		this.evaluate();
+		this.evaluate(isPitcher);
 		
 		expressionSet = true;
 		return validInput;
 	}
 	
-	private void evaluate ()                // Evaluate expression   
+	private void evaluate (boolean isPitcher)                // Evaluate expression   
     {  
     	 double result = 0;
     	if (root != null) {
     		//call eval sub for every player to set their rank
     		for (int i = 0; i < playerArray.size(); i++) {
-    			result = evlauateSub(root, playerArray.get(i));
-    			playerArray.get(i).setRank(result);
+    			Player currentPlayer = playerArray.get(i);
+    			//check if this is being run for pitchers, if it is then only set the rank for them
+    			if (isPitcher) {
+    				if (currentPlayer.getPosition().equals("pitcher")) {
+    					result = evlauateSub(root, playerArray.get(i));
+    	    			playerArray.get(i).setRank(result);
+    				}
+    			} else {
+    				if (!currentPlayer.getPosition().equals("pitcher")) {
+    					result = evlauateSub(root, playerArray.get(i));
+    	    			playerArray.get(i).setRank(result);
+    				}
+    			}
+    			
     		}
     	}
     }
@@ -242,10 +287,14 @@ public class ExprTree {
 	    			result = player.getSlg();
 	    		} else if (subTree.root.getElement() == 'P') {
 	    			result = player.getOps();
+	    		}  else if (subTree.root.getElement() == 'E') {
+	    			result = player.getEra();
+	    		}  else if (subTree.root.getElement() == 'W') {
+	    			result = player.getWin();
+	    		}  else if (subTree.root.getElement() == 'L') {
+	    			result = player.getLoss();
 	    		} 
-	    	}
-	    	
+	    	}	    	
 	    	return result;
-	    }
-	 
+	    } 
 }

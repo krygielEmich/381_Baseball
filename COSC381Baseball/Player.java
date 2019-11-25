@@ -49,6 +49,9 @@ public class Player {
 		return this.name;
 	}
 	//stats
+	public void setPositon(String pos) {
+		position = pos;
+	}
 	public void setAvg(double a) {
 		avg = a;
 	}
