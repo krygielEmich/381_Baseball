@@ -6,7 +6,7 @@ public class Member {
 	
 	//Constructor
 	public Member(PlayerList playerList, String name) {
-		this.playerList=playerList;
+		this.playerList= new PlayerList();
 		this.name = name;
 	}
 	//Getter

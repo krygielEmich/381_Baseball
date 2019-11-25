@@ -2,6 +2,7 @@ package COSC381Baseball;
 
 public class Player {
 	public boolean drafted = false;
+	public boolean ignore = false;
 	//Just a couple of placeholders for now until we decide what to implement here.
 	public double RBI;//Runs Batted in
 	public double wl;//Win/Loss Ratio
@@ -16,18 +17,19 @@ public class Player {
 	public Player() {
 		
 	}
+	public Player(String name) {
+		this.name = name;
+	}
 	public Player(double RBI, double wl, String position, String name) {
 		this.RBI=RBI;
 		this.wl=wl;
 		this.position=position;
 		this.name = name;
 	}
-	//Will print out the player, unless they are already drafted
+	//Will print out the player
 	public String toString() {
 		String x = "";
-		if(!drafted) {
 			x+= this.name+" "+this.position+" W/L: "+wl+" RBI: "+RBI+"\n";
-		}
 		return x;
 	}
 	//Setters/Getters
@@ -79,6 +81,9 @@ public class Player {
 	
 	public void setRank(double r) {
 		rank = r;
+	}
+	public void setIgnore(boolean x) {
+		ignore = x;
 	}
 	
 	public double getAvg() {
