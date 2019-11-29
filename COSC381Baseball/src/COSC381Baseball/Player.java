@@ -29,7 +29,7 @@ public class Player {
 	//Will print out the player
 	public String toString() {
 		String x = "";
-			x+= this.name+" "+this.position+" W/L: "+wl+" RBI: "+RBI+"\n";
+			x= x+this.name+" "+this.position+" W/L: "+wl+" RBI: "+RBI+"\n";
 		return x;
 	}
 	public String toStringSave() {

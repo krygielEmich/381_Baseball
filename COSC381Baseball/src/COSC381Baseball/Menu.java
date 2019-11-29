@@ -95,7 +95,7 @@ public class Menu {
 		String userIn = stdIn.nextLine();
 		input = userIn.split(" ");
 		selection=input[0];
-		switch(selection) {
+		switch(selection.toUpperCase().trim()) {
 		case "ODRAFT":
 			if(input.length==3) {
 				if(memberList.getMember(input[2])==null) {
@@ -170,7 +170,7 @@ public class Menu {
 					break;
 				}
 				if(memberList.getMember(input[1]).playerList==null) {
-					System.out.println("No players draft!\n");
+					System.out.println("No players drafted!\n");
 					break;
 				}
 				STARS stars = new STARS(memberList.getMember(input[1]));
