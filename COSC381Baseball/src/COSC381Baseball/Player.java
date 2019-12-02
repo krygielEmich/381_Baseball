@@ -18,8 +18,7 @@ public class Player {
 	//Will print out the player
 	public String toString() {
 		String x = "";
-		if(this.position!="P")x+=this.name+" "+this.position+" AVG: "+avg+" OBP: "+obp+" "+" SLG: "+slg+" OPS: "+ops+"\n";
-		else x+=this.name+" "+this.position+" AVG: "+avg+" ERA: "+era+" "+" ER: "+er+" BB: "+bb+"\n";
+		x+=this.name+" Team: "+this.team+" Position: "+this.position+" Rank: "+this.rank+"\n";
 		return x;
 	}
 	public String toStringSave() {

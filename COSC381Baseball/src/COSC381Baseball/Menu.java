@@ -64,7 +64,7 @@ public class Menu {
 		testPlayer4.setK(49);
 		testPlayer4.setName("Matt");
 		
-		mlbList.addPlayer(testPlayer1);
+		mlbList = new PlayerList(testPlayer1);
 		mlbList.addPlayer(testPlayer2);
 		mlbList.addPlayer(testPlayer3);
 		mlbList.addPlayer(testPlayer4);
