@@ -4,10 +4,10 @@ public class ODraft {
 	boolean validInput = true;
 	
 	public ODraft(Player player, Member member, PlayerList mlbList) {
-		member.playerList.addPlayer(player);
 		if(mlbList.exists(player)){
 				if(!mlbList.getPlayer(player.getName()).getDrafted()) {
 					member.playerList.addPlayer(player);
+					player.setTeam(member.getName());
 					System.out.print(player.getName()+" drafted to "+member.getName()+"\n");
 				}
 				else {
