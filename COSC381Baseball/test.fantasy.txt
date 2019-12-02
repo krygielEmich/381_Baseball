@@ -1,0 +1,16 @@
+1
+a Start
+Kyle C 0.0 0.0
+Kyle C 0.0 0.0
+Patrick P 0.0 0.0
+Patrick P 0.0 0.0
+
+End
+
+J.Martinez C 10.0 365.0
+J.Verlander P 19.0 114.0
+M.Cabrera 1B 13.0 125.0
+Kyle C 0.0 0.0
+Connor 1B 0.0 0.0
+Patrick P 0.0 0.0
+Matt P 0.0 0.0
