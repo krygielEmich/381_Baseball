@@ -3,7 +3,7 @@ package COSC381Baseball;
 public class Member {
 	PlayerList playerList;
 	String name;
-	public int P;
+	public int P = 0;
 	
 	//Constructor
 	public Member(PlayerList playerList, String name) {

@@ -3,7 +3,8 @@ package COSC381Baseball;
 public class Player {
 	public boolean drafted = false;
 	public boolean ignore = false;
-	public String position, team, name;
+	public String position, name;
+	public String team = "No Team";
 	//stats tracked for ranking
 	public double avg, obp, slg, ops, er, era, k, bb;
 	private double rank = 0;
@@ -18,7 +19,7 @@ public class Player {
 	//Will print out the player
 	public String toString() {
 		String x = "";
-		x+=this.name+" Team: "+this.team+" Position: "+this.position+" Rank: "+this.rank+"\n";
+		x+=this.name+" | Team: "+this.team+" | Position: "+this.position+" | Rank: "+this.rank+"\n";
 		return x;
 	}
 	public String toStringSave() {
