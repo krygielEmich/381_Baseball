@@ -32,7 +32,7 @@ public class Overalls {
 			
 			//output
 			for (int i = 0; i < playersToSort.getPlayerList().size(); i++) {
-				System.out.println(playersToSort.getPlayerList().get(i).getName() + " " + playersToSort.getPlayerList().get(i).getTeam() + " " + playersToSort.getPlayerList().get(i).getRank());
+				System.out.println(playersToSort);
 			}
 		} else {
 			//position supplied, so look for that one only
@@ -73,7 +73,7 @@ public class Overalls {
 					
 		//output
 		for (int i = 0; i < playersToSort.getPlayerList().size(); i++) {
-			System.out.println(playersToSort.getPlayerList().get(i).getName() + " " + playersToSort.getPlayerList().get(i).getTeam() + " " + playersToSort.getPlayerList().get(i).getRank());
+			System.out.println(playersToSort);
 		}
 	}
 	//comparator inner class

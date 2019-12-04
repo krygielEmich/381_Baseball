@@ -6,7 +6,8 @@ public class Player {
 	
 	public boolean drafted = false;
 	public boolean ignore = false;
-	public String position, team, mlbTeam, name;
+	public String position, name, mlbTeam;
+	public String team = "No Team";
 	//stats tracked for ranking
 	public double avg, obp, slg, ops, er, era, k, bb;
 	private double rank = 0;
@@ -21,14 +22,7 @@ public class Player {
 	//Will print out the player
 	public String toString() {
 		String x = "";
-		if(this.position!="P")
-		{
-			x+=this.name+" "+this.mlbTeam+" "+this.position+" AVG: "+avg+" OBP: "+obp+" SLG: "+slg+" OPS: "+ops+"\n";
-		}
-		else 
-		{
-			x+=this.name+" "+this.mlbTeam+" "+this.position+" ER: "+er+" K: "+k+" BB: "+bb+" ERA: "+era+"\n";
-		}
+		x+=this.name+" | Team: "+this.team+" | Position: "+this.position+" | Rank: "+this.rank+"\n";
 		return x;
 	}
 	public String toStringSave() {
