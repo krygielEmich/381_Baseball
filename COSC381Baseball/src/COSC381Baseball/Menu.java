@@ -8,6 +8,7 @@ import java.util.Scanner;
 public class Menu {
 	private boolean quit=false;
 	public PlayerList mlbList;
+	public static MemberList restoredList;
 
 	//Starts with the program, prompts user for what amount of members there are in the league
 	//@return int input, has to be a positive integer
@@ -241,7 +242,7 @@ public class Menu {
 		case "RESTORE":
 			if(input.length==2) {
 				//Set the member list
-				memberList = Restore(input[1], memberList);
+				restoredList = Restore(input[1], memberList);
 				break;
 			}
 			else 
@@ -290,14 +291,23 @@ public class Menu {
 
 	//Main driving method, where the list of members is intialized, as well as where most other methods are
 	//running
-	public static void main(String args[]) {
+	public static void main(String args[]) 
+	{
 		Menu menu = new Menu();
 		int memberAmt = menu.initialize();
 		MemberList memberList = new MemberList(new Member(null, menu.getInput("Enter the name of Member 1: ")));
 		for(int i = 2; i<=memberAmt;i++) {
 			memberList.addMember(new Member(null,menu.getInput("Enter the name of Member "+i+": ")));
 		}
-		while(!menu.quit)menu.display(memberList);
+		while(!menu.quit)
+		{
+			if(restoredList != null)
+			{
+				memberList = restoredList;
+			}
+			menu.display(memberList);
+		}
+			
 	}
 	//This method will restore the current state of the collection class in the program from the savedat.txt file
 	public MemberList Restore(String fileName, MemberList members)
