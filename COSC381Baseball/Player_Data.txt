@@ -1,4 +1,4 @@
-Player	Team	Pos	OBP	SLG	OPS	AVG
+135
 Tim Anderson	CWS	SS	0.357	0.508	0.865	0.335
 Ketel Marte	ARI	2B	0.389	0.592	0.981	0.329
 Christian Yelich	MIL	RF	0.429	0.671	1.1	0.329
@@ -134,7 +134,8 @@ Jurickson Profar	OAK	2B	0.301	0.41	0.711	0.218
 Daniel Vogelbach	SEA	1B	0.341	0.439	0.78	0.208
 Justin Smoak	TOR	1B	0.342	0.406	0.748	0.208
 Rougned Odor	TEX	2B	0.283	0.439	0.722	0.205
-Player	Team	Pos	ER	K	BB	ERA
+-1
+55
 Justin Verlander	HOU	P	64	300	42	2.58
 Shane Bieber	CLE	P	78	259	40	3.28
 Gerrit Cole	HOU	P	59	326	48	2.5

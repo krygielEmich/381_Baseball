@@ -9,6 +9,7 @@ public class ExprTree {
 	private ExprTreeNode root;
 	private boolean expressionSet = false;
 	private ArrayList<Player> playerArray;
+	public int evalIndex = 0;
 	
 	public ExprTree() {
 		
@@ -27,7 +28,7 @@ public class ExprTree {
 	}
 	
 	private boolean buildTree(String inputString, boolean isPitcher) {
-		
+		evalIndex = 0;
 		boolean validInput = true;
 		String inputExpr = "";
 		//gather the input
@@ -51,47 +52,51 @@ public class ExprTree {
 		if (!inputString.equals("ignore")) {
 			inputArr = inputString.split(" ");
 		}
-		char[] charExprArr = new char[inputArr.length];
+		String[] stringExprArr = new String[inputArr.length];
 		for (int i = 0; i < inputArr.length; i++) {
 			//non pitcher route
 			if (!isPitcher) {
 				if (inputArr[i].equals("AVG")) {
-					charExprArr[i] = 'A';
+					stringExprArr[i] = "A";
 				} else if (inputArr[i].equals("OBP")) {
-					charExprArr[i] = 'O';
+					stringExprArr[i] = "O";
 				} else if (inputArr[i].equals("SLG")) {
-					charExprArr[i] = 'S';
+					stringExprArr[i] = "S";
 				} else if (inputArr[i].equals("OPS")) {
-					charExprArr[i] = 'P';
+					stringExprArr[i] = "P";
 				} else if (inputArr[i].equals("+")) {
-					charExprArr[i] = '+';
+					stringExprArr[i] = "+";
 				} else if (inputArr[i].equals("-")) {
-					charExprArr[i] = '-';
+					stringExprArr[i] = "-";
 				} else if (inputArr[i].equals("/")) {
-					charExprArr[i] = '/';
+					stringExprArr[i] = "/";
 				} else if (inputArr[i].equals("*")) {
-					charExprArr[i] = '*';
+					stringExprArr[i] = "*";
+				} else if (Character.isDigit(inputArr[i].charAt(0))) {
+					stringExprArr[i] = inputArr[i];
 				} else {
 					System.out.println("Invalid expression entered. Please check your expression and try again");
 					return false;
 				}
 			} else {//is pitcher
 				if (inputArr[i].equals("ER")) {
-					charExprArr[i] = 'E';
+					stringExprArr[i] = "E";
 				} else if (inputArr[i].equals("ERA")) {
-					charExprArr[i] = 'R';
+					stringExprArr[i] = "R";
 				} else if (inputArr[i].equals("K")) {
-					charExprArr[i] = 'K';
+					stringExprArr[i] = "K";
 				} else if (inputArr[i].equals("BB")) {
-					charExprArr[i] = 'B';
+					stringExprArr[i] = "B";
 				} else if (inputArr[i].equals("+")) {
-					charExprArr[i] = '+';
+					stringExprArr[i] = "+";
 				} else if (inputArr[i].equals("-")) {
-					charExprArr[i] = '-';
+					stringExprArr[i] = "-";
 				} else if (inputArr[i].equals("/")) {
-					charExprArr[i] = '/';
+					stringExprArr[i] = "/";
 				} else if (inputArr[i].equals("*")) {
-					charExprArr[i] = '*';
+					stringExprArr[i] = "*";
+				} else if (Character.isDigit(inputArr[i].charAt(0))) {
+					stringExprArr[i] = inputArr[i];
 				} else {
 					System.out.println("Invalid expression entered. Please check your expression and try again");
 					return false;
@@ -99,8 +104,16 @@ public class ExprTree {
 			}
 		}
 		
-		String prefix = infixToPreFix(charExprArr);
+		String prefix = infixToPreFix(stringExprArr);
 		String prefixString = new String(prefix);
+		
+		//test conversion. should be prefix with spaces between each element
+		System.out.println("infix");
+		for (int i = 0; i < stringExprArr.length; i++) {
+			System.out.print(stringExprArr[i] + " ");
+		}
+		System.out.println("\n" + prefix);
+		
 		try {
 			this.build(prefixString);
 		} catch (IOException e) {}
@@ -108,6 +121,8 @@ public class ExprTree {
 		this.evaluate(isPitcher);
 		
 		expressionSet = true;
+		
+		
 		return validInput;
 	}
 	
@@ -136,30 +151,27 @@ public class ExprTree {
     }
 	
 	//The expression key code needs the input to be in prefix notation, this will translate it for us
-	private String infixToPreFix(char[] input) {
-		//array for output
-		char[] preFixInput = new char[input.length];
-		
+	private String infixToPreFix(String[] input) {
 		//stack for operators and operands
-		Stack<Character> operators = new Stack<Character>();
+		Stack<String> operators = new Stack<String>();
 		Stack<String> operands = new Stack<String>();
 		
 		//cycle through the infix char array 
 		for (int i = 0; i < input.length; i++) {
 			
-			if (input[i] == '(') {
+			if (input[i].equals("(")) {
 				operators.push(input[i]);
 			}
 			
 			//closing paren
-			if (input[i] == ')') {
-				while (!operators.empty() && operators.peek() != '(') {
+			if (input[i].equals(")")) {
+				while (!operators.empty() && operators.peek().equals("(")) {
 					//add operaotrs and operands together for output
 					String operand1, operand2 = "";
 					operand1 = operands.pop();
 					operand2 = operands.pop();
-					char operator = operators.pop();
-					String currentOutput = operator + operand2 + operand1;
+					String operator = operators.pop();
+					String currentOutput = operator + " " + operand2 + " " +operand1;
 					operands.push(currentOutput);
 				}
 				//once it leaves the loop remove the remaining paren
@@ -168,7 +180,7 @@ public class ExprTree {
 			
 			//place operand in the right stack if it is one
 			if (!isOperator(input[i])) {
-				operands.push(Character.toString(input[i]));
+				operands.push(input[i]);
 			//current char is an operator
 			} else {
 				//if it is an operator then push it to the right place in operator stack
@@ -176,8 +188,8 @@ public class ExprTree {
 					String operand1, operand2 = "";
 					operand1 = operands.pop();
 					operand2 = operands.pop();
-					char operator = operators.pop();
-					String temp = operator + operand2 + operand1;
+					String operator = operators.pop();
+					String temp = operator + " " + operand2 + " " + operand1;
 					operands.push(temp);
 				}
 				operators.push(input[i]);
@@ -189,8 +201,8 @@ public class ExprTree {
 			String operand1, operand2;
 			operand1 = operands.pop();
 			operand2 = operands.pop();
-			char operator = operators.pop();
-			String temp = operator + operand2 + operand1;
+			String operator = operators.pop();
+			String temp = operator + " " + operand2 + " " + operand1;
 			operands.push(temp);
 		}
 
@@ -199,16 +211,16 @@ public class ExprTree {
 	}
 	
 	//helper functions
-	private int getPriority(char operator) {
-		if (operator == '+' || operator == '-') {
+	private int getPriority(String operator) {
+		if (operator.equals("+") || operator.equals("-")) {
 			return 1;
 		} else {
 			return 2;
 		}
 	}
 	
-	private boolean isOperator(char c) {
-		if (c == '+' || c == '-' ||  c == '*' || c == '/') {
+	private boolean isOperator(String c) {
+		if (c.equals("+") || c.equals("-") ||  c.equals("*") || c.equals("/")) {
 			return true;
 		}
 		
@@ -218,10 +230,10 @@ public class ExprTree {
 	//re used builder function for expression tree (kyle)
 	 private void build (String input) throws IOException  {      
 		 	
-	    	byte[] inputChars = input.getBytes();
-	    	ByteArrayInputStream charStream = new ByteArrayInputStream(inputChars);
+	    	String[] inputArr = input.split(" ");
 	    	try {
-	    		root=this.buildSub(charStream);
+	    		IndexTracker index = new IndexTracker();
+	    		root=this.buildSub(inputArr, index);
 	    	}catch (IOException e) {
 	    		System.out.println("Not enough opperands provided");
 	    	}	
@@ -229,17 +241,22 @@ public class ExprTree {
 	
 	 
 	 //helper for build
-	 private ExprTreeNode buildSub ( ByteArrayInputStream prefixString )  throws IOException {         
+	 private ExprTreeNode buildSub ( String[] inputArr, IndexTracker index)  throws IOException {  
+		 		if (evalIndex == inputArr.length) {
+		 			return null;
+		 		}
 	    		ExprTree n= new ExprTree();
-	    		n.root= new ExprTreeNode((char) prefixString.read(), null, null);
+	    		n.root= new ExprTreeNode(inputArr[index.getIndex()], null, null);
 	    		
-	    		if (n.root.getElement() == '+' || n.root.getElement() == '-' || n.root.getElement() == '*' || 
-	        	    n.root.getElement() == '/') {
+	    		if (n.root.getElement().equals("+") || n.root.getElement().equals("-") || n.root.getElement().equals("*") || 
+	        	n.root.getElement().equals("/")) {
 	    			if (n.root.getLeft()==null) {
-	    				n.root.setLeft(n.buildSub(prefixString));
+	    				index.increment();
+	    				n.root.setLeft(n.buildSub(inputArr, index));
 	    			}			
 	    			if (n.root.getRight()==null) {
-	    				n.root.setRight(n.buildSub(prefixString));
+	    				index.increment();
+	    				n.root.setRight(n.buildSub(inputArr, index));
 	    			}	    				
 	    		}
 	    	return n.root;
@@ -250,8 +267,8 @@ public class ExprTree {
 	    	ExprTree subTree= new ExprTree();
 	    	subTree.root=node;
 	    	double result=0, num1=0, num2=0;
-	    	if (subTree.root.getElement() == '+' || subTree.root.getElement() == '-' || subTree.root.getElement() == '*' || 
-	    	subTree.root.getElement() == '/') {
+	    	if (subTree.root.getElement().equals("+") || subTree.root.getElement().equals("-") || subTree.root.getElement().equals("*") || 
+	    	subTree.root.getElement().equals("/")) {
 	    		if (subTree.root.getLeft() != null) {
 	    			num1=evlauateSub(subTree.root.getLeft(), player);
 	    		}			
@@ -259,36 +276,49 @@ public class ExprTree {
 	    			num2=evlauateSub(subTree.root.getRight(), player);
 	    		}
 	    		//do the math
-	    		if (subTree.root.getElement() == '+') {
+	    		if (subTree.root.getElement().equals("+")) {
 	    			result = num1+num2;
 	    		}
-	    		if (subTree.root.getElement() == '-') {
+	    		if (subTree.root.getElement().equals("-")) {
 	    			result= num1-num2;
 	    		}
-	    		if (subTree.root.getElement() == '*') {
+	    		if (subTree.root.getElement().equals("*")) {
 	    			result= num1*num2;
 	    		}
-	    		if (subTree.root.getElement() == '/') {
+	    		if (subTree.root.getElement().equals("/")) {
 	    			result= num1/num2;
 	    		}
 	    	}
 	    	else {
-	    		if (subTree.root.getElement() == 'A') {
+	    		if (subTree.root.getElement().equals("A")) {
 	    			result = player.getAvg();
-	    		} else if (subTree.root.getElement() == 'O') {
+	    		} else if (subTree.root.getElement().equals("O")) {
 	    			result = player.getObp();
-	    		} else if (subTree.root.getElement() == 'S') {
+	    		} else if (subTree.root.getElement().equals("S")) {
 	    			result = player.getSlg();
-	    		} else if (subTree.root.getElement() == 'P') {
+	    		} else if (subTree.root.getElement().equals("P")) {
 	    			result = player.getOps();
-	    		}  else if (subTree.root.getElement() == 'E') {
+	    		}  else if (subTree.root.getElement().equals("E")) {
 	    			result = player.getEr();
-	    		}  else if (subTree.root.getElement() == 'B') {
+	    		}  else if (subTree.root.getElement().equals("B")) {
 	    			result = player.getBb();
-	    		}  else if (subTree.root.getElement() == 'K') {
+	    		}  else if (subTree.root.getElement().equals("K")) {
 	    			result = player.getK();
-	    		} 
+	    		} else if (Character.isDigit(subTree.root.getElement().charAt(0))) {
+	    			result = Double.parseDouble(subTree.root.getElement());
+	    		}
+	    			
 	    	}	    	
 	    	return result;
 	    } 
+	 class IndexTracker {
+		 private int index = 0;
+		 
+		 public void increment() {
+			 index++;
+		 }
+		 public int getIndex() {
+			 return index;
+		 }
+	 }
 }

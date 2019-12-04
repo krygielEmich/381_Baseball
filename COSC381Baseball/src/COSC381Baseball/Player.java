@@ -1,9 +1,12 @@
 package COSC381Baseball;
 
 public class Player {
+	//Player	Team	Pos	OBP	SLG	OPS	AVG for Batters
+	//Player	Team	Pos	ER	K	BB	ERA for Pitchers
+	
 	public boolean drafted = false;
 	public boolean ignore = false;
-	public String position, name;
+	public String position, name, mlbTeam;
 	public String team = "No Team";
 	//stats tracked for ranking
 	public double avg, obp, slg, ops, er, era, k, bb;
@@ -24,8 +27,14 @@ public class Player {
 	}
 	public String toStringSave() {
 		String x = "";
-		if(this.position!="P")x+=this.name+" "+this.position+" AVG: "+avg+" OBP: "+obp+" "+" SLG: "+slg+" OPS: "+ops+"\n";
-		else x+=this.name+" "+this.position+" AVG: "+avg+" ERA: "+era+" "+" ER: "+er+" BB: "+bb+"\n";
+		if(this.position.contains("P"))
+		{
+			x+=this.name+" "+this.mlbTeam+" "+this.position+" "+this.er+" "+this.k+" "+this.bb+" "+this.era+"\n";
+		}
+		else 
+		{
+			x+=this.name+" "+this.mlbTeam+" "+this.position+" "+this.avg+" "+this.obp+" "+this.slg+" "+this.ops+"\n";
+		}
 		return x;
 	}
 	//Setters/Getters
