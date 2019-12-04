@@ -30,9 +30,6 @@ public class Menu {
 	//Eventually this will pull from the MLB database, right now I just have
 	//A placeholder so I can implement Drafting.
 	public void initializeMLBList() {
-		mlbList = new PlayerList(new Player(365, 10, "C", "J.Martinez"));
-		mlbList.addPlayer(new Player(114,19,"P","J.Verlander"));
-		mlbList.addPlayer(new Player(125,13,"1B","M.Cabrera"));
 		
 		//more test data
 		Player testPlayer1 = new Player();
@@ -81,7 +78,7 @@ public class Menu {
 		System.out.println(
 				  "ODRAFT (Player Name) (Member Name)\n"
 				+ "IDRAFT (Player Name)\n"
-				+ "OVERALL (Position)\n"
+				+ "OVERALL\n"
 				+ "POVERALL\n"
 				+ "TEAM (Member Name)\n"
 				+ "STARS (Member Name)\n"
@@ -95,7 +92,7 @@ public class Menu {
 		String userIn = stdIn.nextLine();
 		input = userIn.split(" ");
 		selection=input[0];
-		switch(selection) {
+		switch(selection.toUpperCase().trim()) {
 		case "ODRAFT":
 			if(input.length==3) {
 				if(memberList.getMember(input[2])==null) {
@@ -117,21 +114,14 @@ public class Menu {
 			else System.out.println("Invalid Selection!");
 			break;
 		case "OVERALL":
-
 			if(input.length==1) {
 				Overalls overall = new Overalls(mlbList);
 				System.out.println("Enter the position you would like to display. Press enter to display all ");
 				String position = stdIn.nextLine();
 				overall.overall(position);
-
-			if(input.length==2) {
-				//overall(input[1]);
-
-				break;
 			}
 			else System.out.println("Invalid Selection!");
 			break;
-			}
 		case "POVERALL":
 			if(input.length==1) {
 
@@ -170,7 +160,7 @@ public class Menu {
 					break;
 				}
 				if(memberList.getMember(input[1]).playerList==null) {
-					System.out.println("No players draft!\n");
+					System.out.println("No players drafted!\n");
 					break;
 				}
 				STARS stars = new STARS(memberList.getMember(input[1]));

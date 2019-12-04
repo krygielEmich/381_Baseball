@@ -39,7 +39,7 @@ public class ExprTree {
 				System.out.println("E.g. AVG * OBP + SLG / OPS");
 			} else {
 				System.out.println("Please enter the expression you would like to use for ranking pitchers.");
-				System.out.println("The supported stats are: AVG, ERA, W, L. Please insert a space between each part. ");
+				System.out.println("The supported stats are: AVG, ERA, ER, BB. Please insert a space between each part. ");
 				System.out.println("E.g. K * ERA + ER / BB");
 			}
 			Scanner keyboard = new Scanner(System.in);
