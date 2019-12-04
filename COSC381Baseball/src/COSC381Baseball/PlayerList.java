@@ -59,15 +59,20 @@ public class PlayerList {
 		public String toStringSave() 
 		{
 			String x = "";
-			for(int i = 0; i<playerList.size();i++) {
-				x+=playerList.get(i).toStringSave();
+			for(int i = 0; i<playerList.size();i++) 
+			{ 
+				if(playerList.get(i).mlbTeam == null)
+				{
+					//Do nothing
+				}
+				else
+				{
+					x+=playerList.get(i).toStringSave();
+				}
 			}
 			return x;
 		}
 	public ArrayList<Player> getPlayerList() {
 		return playerList;
 	}
-	
-	
-	
 }
