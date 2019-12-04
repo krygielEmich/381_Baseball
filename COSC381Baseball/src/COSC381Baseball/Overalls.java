@@ -31,9 +31,7 @@ public class Overalls {
 			Collections.sort(playersToSort.getPlayerList(), new sortByRank());
 			
 			//output
-			for (int i = 0; i < playersToSort.getPlayerList().size(); i++) {
 				System.out.println(playersToSort);
-			}
 		} else {
 			//position supplied, so look for that one only
 			allPlayers = players.getPlayerList();
@@ -41,7 +39,7 @@ public class Overalls {
 			//first put all the non pitcher players into a new PlayerList we can sort for the output
 			for (int i = 0; i < allPlayers.size(); i++) {
 				//put all players that arent pitchers into the new list
-				if (allPlayers.get(i).getPosition().equals(position) && !allPlayers.get(i).getDrafted()) {
+				if (allPlayers.get(i).getPosition().equalsIgnoreCase(position) && !allPlayers.get(i).getDrafted()) {
 					playersToSort.addPlayer(allPlayers.get(i));
 				}
 			}
@@ -49,11 +47,9 @@ public class Overalls {
 			Collections.sort(playersToSort.getPlayerList(), new sortByRank());
 			
 			//output
-			for (int i = 0; i < playersToSort.getPlayerList().size(); i++) {
-				System.out.println(playersToSort.getPlayerList().get(i).getName() + " " + playersToSort.getPlayerList().get(i).getTeam() + " " + playersToSort.getPlayerList().get(i).getRank());
+			System.out.println(playersToSort);
 			}
 		}
-	}
 	
 	//same as overall but only for pitchers
 	public void pOverall() {
@@ -72,9 +68,7 @@ public class Overalls {
 		Collections.sort(playersToSort.getPlayerList(), new sortByRank());
 					
 		//output
-		for (int i = 0; i < playersToSort.getPlayerList().size(); i++) {
 			System.out.println(playersToSort);
-		}
 	}
 	//comparator inner class
 		class sortByRank implements Comparator<Player> {

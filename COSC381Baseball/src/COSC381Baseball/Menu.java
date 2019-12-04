@@ -29,8 +29,7 @@ public class Menu {
 		}
 		return input;	
 	}
-	//Eventually this will pull from the MLB database, right now I just have
-	//A placeholder so I can implement Drafting.
+	// this will pull from the MLB database
 	public void initializeMLBList() {		
 		//Player	Team	Pos	OBP	SLG	OPS	AVG for Batters
 		//Player	Team	Pos	ER	K	BB	ERA for Pitchers
@@ -100,6 +99,8 @@ public class Menu {
 		}
 			
 		//Now update mlbdata with new player list
+		draftList.playerList.remove(0);
+		draftList.playerList.remove(135);
 		this.mlbList = draftList;
 		
 		//Once file no longer has any values, close the scanner
@@ -163,6 +164,7 @@ public class Menu {
 				System.out.println("Enter the position you would like to display. Press enter to display all ");
 				String position = stdIn.nextLine();
 				overall.overall(position);
+				break;
 			}
 			else 
 			{

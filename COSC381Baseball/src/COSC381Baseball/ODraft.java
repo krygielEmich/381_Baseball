@@ -6,7 +6,7 @@ public class ODraft {
 	public ODraft(Player player, Member member, PlayerList mlbList) {
 		if(mlbList.exists(player)){
 				if(!mlbList.getPlayer(player.getName()).getDrafted()) {
-					if(player.getPosition()!="P"&&(member.playerList.getPos(player.getPosition())).getName()!=""||player.getPosition()=="P"&&member.P<5) {
+					if(player.getPosition()!="P"&&member.playerList.getPos(player.getPosition()).getName()==""||player.getPosition()=="P"&&member.P<5) {
 						member.playerList.addPlayer(player);
 						player.setTeam(member.getName());
 						if(player.getPosition()=="P")member.P++;
