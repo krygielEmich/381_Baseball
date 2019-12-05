@@ -160,7 +160,7 @@ public class Menu {
 			}
 		case "OVERALL":
 			if(input.length==1) {
-				Overalls overall = new Overalls(mlbList);
+				Overalls overall = new Overalls(mlbList, memberList);
 				System.out.println("Enter the position you would like to display. Press enter to display all ");
 				String position = stdIn.nextLine();
 				overall.overall(position);
@@ -174,7 +174,7 @@ public class Menu {
 		case "POVERALL":
 			if(input.length==1) {
 
-				Overalls overall = new Overalls(mlbList);
+				Overalls overall = new Overalls(mlbList, memberList);
 				overall.pOverall();
 
 				//poverall();

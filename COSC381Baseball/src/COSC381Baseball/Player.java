@@ -22,7 +22,7 @@ public class Player {
 	//Will print out the player
 	public String toString() {
 		String x = "";
-		x+=this.name+" | Team: "+this.team+" | Position: "+this.position+" | Rank: "+this.rank+"\n";
+		x+=this.name+" | Team: "+this.mlbTeam+" | Position: "+this.position+" | Rank: "+this.rank+"\n";
 		return x;
 	}
 	public String toStringSave() {
