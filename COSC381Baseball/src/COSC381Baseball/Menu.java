@@ -399,7 +399,11 @@ public class Menu {
 					if(fileScan.hasNextInt())
 					{
 						if(fileScan.nextInt() == -1)
+						{
+							fileScan.nextLine();
 							break;
+						}
+							
 					}
 			}
 			
@@ -607,18 +611,18 @@ public class Menu {
 		for(int i = 0; i< members.memberList.size(); i++)
 		{
 			Member temp = members.memberList.get(i);
-			text+= temp.name;
+			text+= temp.name+"\n";
 			
 			//If member has a player list, print start and end and print out members
 			if(temp.playerList != null)
 			{
-				text+="\nTeam\n";
 				text+= members.memberList.get(i).playerList.toStringSave();
-				text+="End of Team\n";
+				text+="-1\n";
 			}
 			else
 			{
-				text+= " NULL\n";
+				text+= "NULL\n";
+				text+="-1\n";
 			}	
 		}
 	    //Return the string

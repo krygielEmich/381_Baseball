@@ -86,9 +86,9 @@ public class ExprTreeDemo {
 		}
 		
 		//test overall no input
-		Overalls overall = new Overalls(players);
-		overall.overall("");
-		System.out.println("====now pitchers====");
-		overall.pOverall();
+//		Overalls overall = new Overalls(players);
+//		overall.overall("");
+//		System.out.println("====now pitchers====");
+//		overall.pOverall();
 	}
 }
