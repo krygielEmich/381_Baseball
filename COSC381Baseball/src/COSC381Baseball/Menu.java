@@ -1,12 +1,14 @@
 package COSC381Baseball;
 
 import java.io.*;
+import java.util.ArrayList;
 import java.util.InputMismatchException;
 import java.util.Scanner;
 
 public class Menu {
 	private boolean quit=false;
 	public PlayerList mlbList;
+	public static MemberList restoredList;
 
 	//Starts with the program, prompts user for what amount of members there are in the league
 	//@return int input, has to be a positive integer
@@ -27,51 +29,85 @@ public class Menu {
 		}
 		return input;	
 	}
-	//Eventually this will pull from the MLB database, right now I just have
-	//A placeholder so I can implement Drafting.
-	public void initializeMLBList() {
-		mlbList = new PlayerList(new Player(365, 10, "C", "J.Martinez"));
-		mlbList.addPlayer(new Player(114,19,"P","J.Verlander"));
-		mlbList.addPlayer(new Player(125,13,"1B","M.Cabrera"));
+	// this will pull from the MLB database
+	public void initializeMLBList() {		
+		//Player	Team	Pos	OBP	SLG	OPS	AVG for Batters
+		//Player	Team	Pos	ER	K	BB	ERA for Pitchers
+		PlayerList draftList= new PlayerList();
+				
+		//Retrieve the input name
+		String name = "Player_Data";
 		
-		//more test data
-		Player testPlayer1 = new Player();
-		testPlayer1.setPositon("C");
-		testPlayer1.setObp(3);
-		testPlayer1.setSlg(6);
-		testPlayer1.setOps(67.1);
-		testPlayer1.setAvg(9);
-		testPlayer1.setName("Kyle");
+		//Create variable file
+		File file;
 		
-		Player testPlayer2 = new Player();
-		testPlayer2.setPositon("1B");
-		testPlayer2.setObp(3);
-		testPlayer2.setSlg(6);
-		testPlayer2.setOps(0.8);
-		testPlayer2.setAvg(9);
-		testPlayer2.setName("Connor");
+		file = new File(name+".txt");
 		
-		Player testPlayer3 = new Player();
-		testPlayer3.setPositon("P");
-		testPlayer3.setBb(3);
-		testPlayer3.setEr(6);
-		testPlayer3.setEra(6);
-		testPlayer3.setK(9.2);
-		testPlayer3.setName("Patrick");
+		//If the string at the default user's path exists (old save), use that file to overwrite
+		if(file.isFile())
+		{
+			//do
+		}
+		else
+		{
+			//If file doesnt exist, exit the restore
+			System.out.println("Path Not Found: Unable to download MLB List from"+name+".txt.");
+			return;
+		}
+		
+		//Create a new scanner for the file
+		Scanner fileScan;
+		try 
+		{
+			fileScan = new Scanner(file);
+		} 
+		catch (FileNotFoundException e) 
+		{
+			e.printStackTrace();
+			System.out.println("File Not Found: Unable to download MLB List from"+name+".txt.");
+			return;
+		}
+		
+		//Create counter to check player count
+		int counter = 0;
+		
+		//While file is scanning, store values into proper places
+		while(fileScan.hasNext() )
+		{	
+			//If beginning, count number of position players
+			if(counter == 0)
+			{
+				counter = fileScan.nextInt()+1;
+			}
+			//Now retrieving all player data
+			else if(fileScan.hasNextLine())
+			{
+				
+				//Decrement counter, adding player
+				counter--;
+				
+				//Create empty array of values from line
+				String[] tempPlayer = fileScan.nextLine().split("\t");
 
-		Player testPlayer4 = new Player();
-		testPlayer4.setPositon("P");
-		testPlayer4.setBb(3.5);
-		testPlayer4.setEr(1);
-		testPlayer4.setEra(7);
-		testPlayer4.setK(49);
-		testPlayer4.setName("Matt");
+				//Now Create new player class and retrieve converted data
+				Player newGuy = new Player();
+				newGuy = this.ToPlayerList(tempPlayer);
+				
+				//Add to new list
+				draftList.addPlayer(newGuy);
+			}
+		}
+			
+		//Now update mlbdata with new player list
+		draftList.playerList.remove(0);
+		draftList.playerList.remove(135);
+		this.mlbList = draftList;
 		
-		mlbList.addPlayer(testPlayer1);
-		mlbList.addPlayer(testPlayer2);
-		mlbList.addPlayer(testPlayer3);
-		mlbList.addPlayer(testPlayer4);
+		//Once file no longer has any values, close the scanner
+		fileScan.close();
 		
+		//Print confirmation of successful restore
+		System.out.println("The MLB List has been implemented from: "+name+".txt.");	
 	}
 	//Code recycled from last project with some tweaks, uses switch statement and splits 
 	//arguments into String input
@@ -81,21 +117,21 @@ public class Menu {
 		System.out.println(
 				  "ODRAFT (Player Name) (Member Name)\n"
 				+ "IDRAFT (Player Name)\n"
-				+ "OVERALL (Position)\n"
+				+ "OVERALL\n"
 				+ "POVERALL\n"
 				+ "TEAM (Member Name)\n"
 				+ "STARS (Member Name)\n"
 				+ "SAVE (File Name)\n"
 				+ "QUIT\n"
 				+ "RESTORE (File Name)\n"
-				+ "EVALFUN (Expression)\n"
-				+ "PEVALFUN (Expression)\n");
+				+ "EVALFUN \n"
+				+ "PEVALFUN \n");
 		String[] input = null;
 		String selection;
 		String userIn = stdIn.nextLine();
 		input = userIn.split(" ");
 		selection=input[0];
-		switch(selection) {
+		switch(selection.toUpperCase().trim()) {
 		case "ODRAFT":
 			if(input.length==3) {
 				if(memberList.getMember(input[2])==null) {
@@ -106,44 +142,50 @@ public class Menu {
 				if(oDraft.getValidInput())mlbList.getPlayer(input[1]).setDrafted(true);
 				break;
 			}
-			else System.out.println("Invalid Selection!");
-			break;
+			else 
+			{
+				System.out.println("Invalid Selection!");
+				break;
+			}
 		case "IDRAFT":
 			if(input.length==2) {
 				ODraft oDraft = new ODraft(mlbList.getPlayer(input[1]),memberList.memberList.get(0),mlbList);
 				if(oDraft.getValidInput())mlbList.getPlayer(input[1]).setDrafted(true);
 				break;
 			}
-			else System.out.println("Invalid Selection!");
-			break;
+			else 
+			{
+				System.out.println("Invalid Selection!");
+				break;
+			}
 		case "OVERALL":
-
 			if(input.length==1) {
-				Overalls overall = new Overalls(mlbList);
+				Overalls overall = new Overalls(mlbList, memberList);
 				System.out.println("Enter the position you would like to display. Press enter to display all ");
 				String position = stdIn.nextLine();
 				overall.overall(position);
-
-			if(input.length==2) {
-				//overall(input[1]);
-
 				break;
 			}
-			else System.out.println("Invalid Selection!");
-			break;
+			else 
+			{
+				System.out.println("Invalid Selection!");
+				break;
 			}
 		case "POVERALL":
 			if(input.length==1) {
 
-				Overalls overall = new Overalls(mlbList);
+				Overalls overall = new Overalls(mlbList, memberList);
 				overall.pOverall();
 
 				//poverall();
 
 				break;
 			}
-			else System.out.println("Invalid Selection!");
-			break;
+			else 
+			{
+				System.out.println("Invalid Selection!");
+				break;
+			}
 		case "TEAM":
 			if(input.length==2) {
 
@@ -161,8 +203,11 @@ public class Menu {
 
 				break;
 			}
-			else System.out.println("Invalid Selection!");
-			break;
+			else 
+			{
+				System.out.println("Invalid Selection!");
+				break;
+			}
 		case "STARS":
 			if(input.length==2) {
 				if(memberList.getMember(input[1])==null) {
@@ -170,21 +215,27 @@ public class Menu {
 					break;
 				}
 				if(memberList.getMember(input[1]).playerList==null) {
-					System.out.println("No players draft!\n");
+					System.out.println("No players drafted!\n");
 					break;
 				}
 				STARS stars = new STARS(memberList.getMember(input[1]));
 				break;
 			}
-			else System.out.println("Invalid Selection!");
-			break;
+			else 
+			{
+				System.out.println("Invalid Selection!");
+				break;
+			}
 		case "SAVE":
 			if(input.length==2) {
 				Save(input[1], memberList);
 				break;
 			}
-			else System.out.println("Invalid Selection!");
-			break;
+			else 
+			{
+				System.out.println("Invalid Selection!");
+				break;
+			}
 		case "QUIT":
 			this.quit = Quit();
 			System.out.println("Exiting Baseball Manager...");
@@ -193,11 +244,14 @@ public class Menu {
 		case "RESTORE":
 			if(input.length==2) {
 				//Set the member list
-				memberList = Restore(input[1], memberList);
+				restoredList = Restore(input[1], memberList);
 				break;
 			}
-			else System.out.println("Invalid Selection!");
-			break;
+			else 
+			{
+				System.out.println("Invalid Selection!");
+				break;
+			}
 		//These two are gonna be trickier... just placeholders for now
 		case "EVALFUN":
 			if(input.length==1) {
@@ -205,16 +259,24 @@ public class Menu {
 				evalTree.evalfun("ignore");
 				break;
 			}
-			else System.out.println("Invalid Selection!");
-			break;
+			else 
+			{
+				System.out.println("Invalid Selection!");
+				break;
+			}
+		
 		case "PEVALFUN":
 			if(input.length==1) {
 				ExprTree evalTree = new ExprTree(mlbList);
 				evalTree.pEvalfun("ignore");
 				break;
 			}
-			else System.out.println("Invalid Selection!");
-			break;
+			else 
+			{
+				System.out.println("Invalid Selection!");
+				break;
+			}
+		
 		default:
 			System.out.println("Invalid Selection!");
 			break;
@@ -231,14 +293,23 @@ public class Menu {
 
 	//Main driving method, where the list of members is intialized, as well as where most other methods are
 	//running
-	public static void main(String args[]) {
+	public static void main(String args[]) 
+	{
 		Menu menu = new Menu();
 		int memberAmt = menu.initialize();
 		MemberList memberList = new MemberList(new Member(null, menu.getInput("Enter the name of Member 1: ")));
 		for(int i = 2; i<=memberAmt;i++) {
 			memberList.addMember(new Member(null,menu.getInput("Enter the name of Member "+i+": ")));
 		}
-		while(!menu.quit)menu.display(memberList);
+		while(!menu.quit)
+		{
+			if(restoredList != null)
+			{
+				memberList = restoredList;
+			}
+			menu.display(memberList);
+		}
+			
 	}
 	//This method will restore the current state of the collection class in the program from the savedat.txt file
 	public MemberList Restore(String fileName, MemberList members)
@@ -302,45 +373,45 @@ public class Menu {
 			//Create empty new member playerList
 			PlayerList newMemPlayerList = new PlayerList();
 			
+			//Now Create new member class and retrieve converted data
+			Member newMem = new Member();
+			
+			//Create empty array of values from line
+			String tempMember = fileScan.nextLine();
+			
+			//Set member name
+			newMem.name = tempMember;
+			
 			//Now retrieving all player data
-			if(fileScan.hasNextLine())
+			while(fileScan.hasNextLine())
 			{
-				//Create empty array of values from line
-				String[] tempMember = fileScan.nextLine().split(" ");
-				
-				//Check if has player data
-				if(tempMember[1].equalsIgnoreCase("Start"))
-				{
-					
-					//Player Data exists for this member, begin loop for player data
-					while(!fileScan.next().equalsIgnoreCase("End"))
-					{
-						if(fileScan.hasNextLine())
-						{
-							//Create empty array of values from line
-							String[] newTempPlayer = fileScan.nextLine().split(" ");
+					//Create empty array of values from line
+					String[] newTempPlayer = fileScan.nextLine().split(" ");
 
-							//Now Create new player class and retrieve converted data
-							Player newGuy = new Player();
-							newGuy = this.ToPlayerList(newTempPlayer);
-							
-							//Add to new list
-							newMemPlayerList.addPlayer(newGuy);
+					//Now Create new player class and retrieve converted data
+					Player newGuy = new Player();
+					newGuy = this.ToPlayerList(newTempPlayer);
+					
+					//Add to new list
+					newMemPlayerList.addPlayer(newGuy);
+					
+					//Exit loop and break
+					if(fileScan.hasNextInt())
+					{
+						if(fileScan.nextInt() == -1)
+						{
+							fileScan.nextLine();
+							break;
 						}
+							
 					}
-				}
-				
-				//Now Create new member class and retrieve converted data
-				Member newMem = new Member();
-				
-				//Add the new player list	
-				newMem = this.ToMemberList(tempMember);
-				
-				newMem.playerList = newMemPlayerList;
-				
-				//Add to new list
-				newMembers.addMember(newMem);
 			}
+			
+			//Add the new player list	
+			newMem.playerList = newMemPlayerList;
+			
+			//Add to new list
+			newMembers.addMember(newMem);
 		}
 		
 		//RESTORING PLAYERS HERE///////////////////////////////
@@ -439,23 +510,60 @@ public class Menu {
 					guy.name = player[i];
 					break;
 				case 1:
-					guy.team = player[i];
+					guy.mlbTeam = player[i];
 					break;
 				case 2:
 					guy.position = player[i];
 					break;
 				case 3:
-					guy.obp = Float.valueOf(player[i]);
-					break;
+					if(guy.position.contains("P"))
+					{
+						guy.er = Float.valueOf(player[i]);
+						break;
+					}
+					else
+					{
+						guy.obp = Float.valueOf(player[i]);
+						guy.obp  = Math.round(guy.obp  * 1000.0) / 1000.0;
+						break;
+					}
 				case 4:
-					guy.slg = Float.valueOf(player[i]);
-					break;
+					if(guy.position.contains("P"))
+					{
+						guy.k = Float.valueOf(player[i]);
+						break;
+					}
+					else
+					{
+						guy.slg = Float.valueOf(player[i]);
+						guy.slg  = Math.round(guy.slg  * 1000.0) / 1000.0;
+						break;
+					}
 				case 5:
-					guy.ops =  Float.valueOf(player[i]);
-					break;
+					if(guy.position.contains("P"))
+					{
+						guy.bb = Float.valueOf(player[i]);
+						break;
+					}
+					else
+					{
+						guy.ops = Float.valueOf(player[i]);
+						guy.ops  = Math.round(guy.ops  * 1000.0) / 1000.0;
+						break;
+					}
 				case 6:
-					guy.avg = Float.valueOf(player[i]);
-					break;
+					if(guy.position.contains("P"))
+					{
+						guy.era = Float.valueOf(player[i]);
+						guy.era  = Math.round(guy.era  * 1000.0) / 1000.0;
+						break;
+					}
+					else
+					{
+						guy.avg = Float.valueOf(player[i]);
+						guy.avg  = Math.round(guy.avg  * 1000.0) / 1000.0;
+						break;
+					}
 				default:
 					System.out.println("Error, should not have this many values");
 					break;
@@ -486,7 +594,7 @@ public class Menu {
 		text+= MembersToString(members);
 		
 		//Next, append toString of all players in the mlb list
-		text+= PlayersToString(this.mlbList);
+		text+= PlayersToString(mlbList);
 		
 	    //Return the string
 		return text;
@@ -503,18 +611,18 @@ public class Menu {
 		for(int i = 0; i< members.memberList.size(); i++)
 		{
 			Member temp = members.memberList.get(i);
-			text+= temp.name;
+			text+= temp.name+"\n";
 			
 			//If member has a player list, print start and end and print out members
 			if(temp.playerList != null)
 			{
-				text+=" Start\n";
-				text+= members.memberList.get(i).playerList.toStringSave()+"\n";
-				text+="End\n";
+				text+= members.memberList.get(i).playerList.toStringSave();
+				text+="-1\n";
 			}
 			else
 			{
-				text+= " NULL\n";
+				text+= "NULL\n";
+				text+="-1\n";
 			}	
 		}
 	    //Return the string

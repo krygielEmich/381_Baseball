@@ -20,6 +20,7 @@ public class Team {
 		printLine("P");
 		printLine("P");
 		printLine("P");
+		member.playerList.resetIgnore();
 		
 	}
 	public void printLine(String pos) {
@@ -32,7 +33,7 @@ public class Team {
 		if(member.playerList.getPos(pos).getName()!="") {
 			System.out.print(pos);
 			if(isPitcher)System.out.print(pitchers);
-			System.out.print(": "+member.playerList.getPos(pos).getName()+"\n");
+			System.out.print(": "+member.playerList.getPos(pos));
 			printed.addPlayer(member.playerList.getPos(pos));
 		}
 		else {
@@ -40,6 +41,5 @@ public class Team {
 			if(isPitcher)System.out.print(pitchers);
 			System.out.print(": Not Drafted\n");
 		}
-		member.playerList.resetIgnore();
 	}
 }

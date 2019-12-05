@@ -1,14 +1,13 @@
 package COSC381Baseball;
 
 public class Player {
+	//Player	Team	Pos	OBP	SLG	OPS	AVG for Batters
+	//Player	Team	Pos	ER	K	BB	ERA for Pitchers
+	
 	public boolean drafted = false;
 	public boolean ignore = false;
-	//Just a couple of placeholders for now until we decide what to implement here.
-	public double RBI;//Runs Batted in
-	public double wl;//Win/Loss Ratio
-	public String position;
-	public String team;
-	public String name;
+	public String position, name, mlbTeam;
+	public String team = "No Team";
 	//stats tracked for ranking
 	public double avg, obp, slg, ops, er, era, k, bb;
 	private double rank = 0;
@@ -20,21 +19,22 @@ public class Player {
 	public Player(String name) {
 		this.name = name;
 	}
-	public Player(double RBI, double wl, String position, String name) {
-		this.RBI=RBI;
-		this.wl=wl;
-		this.position=position;
-		this.name = name;
-	}
 	//Will print out the player
 	public String toString() {
 		String x = "";
-			x+= this.name+" "+this.position+" W/L: "+wl+" RBI: "+RBI+"\n";
+		x+=this.name+" | Team: "+this.mlbTeam+" | Position: "+this.position+" | Rank: "+this.rank+"\n";
 		return x;
 	}
 	public String toStringSave() {
 		String x = "";
-			x+= this.name+" "+this.position+" "+wl+" "+RBI+"\n";
+		if(this.position.contains("P"))
+		{
+			x+=this.name+" "+this.mlbTeam+" "+this.position+" "+this.er+" "+this.k+" "+this.bb+" "+this.era+"\n";
+		}
+		else 
+		{
+			x+=this.name+" "+this.mlbTeam+" "+this.position+" "+this.avg+" "+this.obp+" "+this.slg+" "+this.ops+"\n";
+		}
 		return x;
 	}
 	//Setters/Getters
@@ -46,12 +46,6 @@ public class Player {
 	}
 	public boolean getDrafted() {
 		return this.drafted;
-	}
-	public double getRBI() {
-		return this.RBI;
-	}
-	public double getwl() {
-		return wl;
 	}
 	public String getPosition() {
 		return this.position;

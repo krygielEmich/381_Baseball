@@ -9,10 +9,10 @@ public class ExprTreeDemo {
 		Player test3 = new Player();
 		Player test4 = new Player();
 		
-		test1.setAvg(1);
-		test1.setObp(2);
-		test1.setSlg(3);
-		test1.setOps(44);
+		test1.setAvg(20);
+		test1.setObp(4);
+		test1.setSlg(71.4);
+		test1.setOps(72.9);
 		
 		test2.setAvg(1);
 		test2.setObp(2);
@@ -67,28 +67,28 @@ public class ExprTreeDemo {
 
 		
 		PlayerList players = new PlayerList(test1);
-		players.addPlayer(test2);
-		players.addPlayer(test3);
-		players.addPlayer(test4);
-		players.addPlayer(p1);
-		players.addPlayer(p2);
-		players.addPlayer(p3);
-		players.addPlayer(p4);
+		//players.addPlayer(test2);
+		//players.addPlayer(test3);
+		//players.addPlayer(test4);
+		//players.addPlayer(p1);
+		//players.addPlayer(p2);
+		//players.addPlayer(p3);
+		//players.addPlayer(p4);
 		
 		ExprTree testWithPlayers = new ExprTree(players);
-		//testWithPlayers.evalfun("ignore");
-		testWithPlayers.pEvalfun("ignore");
+		testWithPlayers.evalfun("ignore");
+		//testWithPlayers.pEvalfun("ignore");
 		
 		//print out ranks
 		System.out.println("Printing ranks. ");
 		for (int i = 0; i < players.getPlayerList().size(); i++) {
-			//System.out.println(players.getPlayerList().get(i).getRank());
+			System.out.println(players.getPlayerList().get(i).getRank());
 		}
 		
 		//test overall no input
-		Overalls overall = new Overalls(players);
-		//overall.overall("");
-		System.out.println("====now pitchers====");
-		overall.pOverall();
+//		Overalls overall = new Overalls(players);
+//		overall.overall("");
+//		System.out.println("====now pitchers====");
+//		overall.pOverall();
 	}
 }
