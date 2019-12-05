@@ -33,7 +33,7 @@ public class Team {
 		if(member.playerList.getPos(pos).getName()!="") {
 			System.out.print(pos);
 			if(isPitcher)System.out.print(pitchers);
-			System.out.print(": "+member.playerList.getPos(pos).getName()+"\n");
+			System.out.print(": "+member.playerList.getPos(pos));
 			printed.addPlayer(member.playerList.getPos(pos));
 		}
 		else {
