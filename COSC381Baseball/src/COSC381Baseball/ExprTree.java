@@ -16,6 +16,7 @@ public class ExprTree {
 	}
 	public ExprTree(PlayerList players) {
 		playerArray = players.getPlayerList(); 
+		playerArray.remove(0);
 	}
 	
 	
