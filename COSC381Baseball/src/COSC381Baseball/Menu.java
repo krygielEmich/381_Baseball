@@ -124,8 +124,8 @@ public class Menu {
 				+ "SAVE (File Name)\n"
 				+ "QUIT\n"
 				+ "RESTORE (File Name)\n"
-				+ "EVALFUN (Expression)\n"
-				+ "PEVALFUN (Expression)\n");
+				+ "EVALFUN \n"
+				+ "PEVALFUN \n");
 		String[] input = null;
 		String selection;
 		String userIn = stdIn.nextLine();
